@@ -1,19 +1,81 @@
-import ChatWidget from "ChatWidget";
+import { useState } from "react";
+import ChatWidget from "./ChatWidget";
 
 function App() {
+  const [showVideos, setShowVideos] = useState(false);
+
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Welcome International Students</h1>
+    <div>
+      {/* Header */}
+      <header style={styles.header}>
+        <h1>
+          Learning Module for Incoming Hamilton International Student Service
+        </h1>
+      </header>
 
-      <section>
-        <h2>Preparation Video Series</h2>
-        <p>Videos will appear here.</p>
-        {/* Later: embed YouTube / hosted videos */}
-      </section>
+      <main style={styles.main}>
+        {/* Video Section */}
+        <section style={styles.section}>
+          <button
+            style={styles.dropdownButton}
+            onClick={() => setShowVideos(!showVideos)}
+          >
+            {showVideos ? "Hide Preparation Videos ▲" : "Show Preparation Videos ▼"}
+          </button>
 
-      <ChatWidget />
+          {showVideos && (
+            <div style={styles.videoContainer}>
+              <p>Video Module 1: Arrival Process</p>
+              <p>Video Module 2: Visa & Immigration</p>
+              <p>Video Module 3: Health Insurance</p>
+              {/* Later you can embed YouTube iframe here */}
+            </div>
+          )}
+        </section>
+
+        {/* Chat Section */}
+        <section style={styles.section}>
+          <ChatWidget />
+        </section>
+      </main>
     </div>
   );
 }
+
+const styles = {
+  header: {
+    backgroundColor: "#003366",
+    color: "white",
+    padding: "1.5rem",
+    textAlign: "center"
+  },
+  main: {
+    padding: "2rem",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  section: {
+    width: "100%",
+    maxWidth: "800px",
+    marginBottom: "2rem"
+  },
+  dropdownButton: {
+    padding: "0.8rem 1rem",
+    fontSize: "1rem",
+    borderRadius: "6px",
+    border: "none",
+    backgroundColor: "#0066cc",
+    color: "white",
+    cursor: "pointer"
+  },
+  videoContainer: {
+    marginTop: "1rem",
+    padding: "1rem",
+    border: "1px solid #ddd",
+    borderRadius: "8px",
+    backgroundColor: "#f9f9f9"
+  }
+};
 
 export default App;
