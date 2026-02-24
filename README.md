@@ -1,12 +1,12 @@
 # Thesis
 Computer science thesis project
 
-Run backend:
-pip install -r requirements.txt
+**Run backend:**
+'''pip install -r requirements.txt'''
 
-python backendmain.py
+'''python backendmain.py'''
 
-Run frontend:
-npm install
+**Run frontend:**
+'''npm install'''
 
-npm run dev
+'''npm run dev'''
