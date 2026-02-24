@@ -14,7 +14,7 @@ Usage:
 
 import argparse
 from pathlib import Path
-from chatbot import VectorStore
+from chat.chatbot import VectorStore
 
 # ─────────────────────────────────────────────
 # Text Chunker

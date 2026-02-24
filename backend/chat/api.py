@@ -12,30 +12,17 @@ Endpoints:
   DELETE /history     — clear conversation history
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import json
 
-from chatbot import ISSChatbot
-from ingest import load_sample_data
+from chat.chatbot import ISSChatbot
+from chat.ingest import load_sample_data
 
-app = FastAPI(
-    title="Hamilton ISS Chatbot API",
-    description="AI-powered assistant for International Student Services at Hamilton College",
-    version="1.0.0",
-)
-
-# Allow your frontend to call this API
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # tighten this in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+router = APIRouter()
 
 # One chatbot instance per server process
 # For production, use per-session instances with a session store (e.g. Redis)
@@ -70,7 +57,7 @@ class IngestResponse(BaseModel):
 # ─────────────────────────────────────────────
 # Routes
 # ─────────────────────────────────────────────
-@app.get("/health")
+@router.get("/health")
 def health_check():
     return {
         "status": "ok",
@@ -79,7 +66,7 @@ def health_check():
     }
 
 
-@app.post("/chat", response_model=ChatResponse)
+@router.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
     if not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
@@ -90,7 +77,7 @@ def chat(req: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/chat/stream")
+@router.post("/chat/stream")
 def chat_stream(req: ChatRequest):
     """Stream tokens as server-sent events (SSE)."""
     if not req.message.strip():
@@ -104,7 +91,7 @@ def chat_stream(req: ChatRequest):
     return StreamingResponse(generate(), media_type="text/event-stream")
 
 
-@app.post("/ingest", response_model=IngestResponse)
+@router.post("/ingest", response_model=IngestResponse)
 def ingest_document(req: IngestRequest):
     """Add a single document (text chunk) to the knowledge base."""
     from ingest import chunk_text
@@ -121,14 +108,14 @@ def ingest_document(req: IngestRequest):
     )
 
 
-@app.post("/ingest/sample")
+@router.post("/ingest/sample")
 def ingest_sample():
     """Load the built-in sample ISS data (useful for testing)."""
     load_sample_data(chatbot.store)
     return {"success": True, "total_documents": chatbot.store.count()}
 
 
-@app.delete("/history")
+@router.delete("/history")
 def clear_history():
     chatbot.clear_history()
     return {"success": True, "message": "Conversation history cleared."}
