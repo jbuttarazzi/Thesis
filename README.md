@@ -2,11 +2,11 @@
 Computer science thesis project
 
 **Run backend:**
-'''pip install -r requirements.txt'''
+`pip install -r requirements.txt`
 
-'''python backendmain.py'''
+`python backendmain.py`
 
 **Run frontend:**
-'''npm install'''
+`npm install`
 
-'''npm run dev'''
+`npm run dev`
