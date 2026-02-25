@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ChatWidget from "./ChatWidget";
+import VideoIntegration from "./video-integration/VideoIntegration";
 
 function App() {
   const [showVideos, setShowVideos] = useState(false);
@@ -25,10 +26,7 @@ function App() {
 
           {showVideos && (
             <div style={styles.videoContainer}>
-              <p>Video Module 1: Arrival Process</p>
-              <p>Video Module 2: Visa & Immigration</p>
-              <p>Video Module 3: Health Insurance</p>
-              {/* Later you can embed YouTube iframe here */}
+              <VideoIntegration onBack={() => setShowVideos(false)} />
             </div>
           )}
         </section>
