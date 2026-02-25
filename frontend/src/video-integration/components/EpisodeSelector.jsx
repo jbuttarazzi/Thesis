@@ -12,6 +12,7 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
   // Add new episodes here as they are created
   const episodes = [
     { id: 1, title: 'Episode 1', description: 'Interactive arrival experience' },
+    { id: 2, title: 'Episode 2', description: 'Continued journey' },
     // Add more episodes here as they're created
   ];
 

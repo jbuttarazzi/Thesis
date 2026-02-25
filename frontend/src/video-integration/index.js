@@ -8,5 +8,9 @@
 // Main component that handles episode selection and navigation
 export { default as VideoIntegration } from './VideoIntegration';
 
+// Individual episode components
+export { default as Episode1 } from './pages/Episode1';
+export { default as Episode2 } from './pages/Episode2';
+
 // Individual episode component (can be used standalone if needed)
 export { default as Episode1 } from './pages/Episode1';
