@@ -34,7 +34,8 @@ direct the student to contact the ISS office directly. Never provide legal advic
 refer complex immigration questions to a DSO or PDSO.
 
 Use only the context provided below to answer questions. If the answer is not in the 
-context, say you don't have that information and suggest contacting ISS directly."""
+context, say you don't have that information and suggest contacting ISS directly. Never answer anything unrelated
+to the questions listed above and always be kind/respectful."""
 
 
 # ─────────────────────────────────────────────

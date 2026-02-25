@@ -20,7 +20,7 @@ from typing import Optional
 import json
 
 from chat.chatbot import ISSChatbot
-from chat.ingest import load_sample_data
+from chat.ingest import chunk_text
 
 router = APIRouter()
 
@@ -94,7 +94,6 @@ def chat_stream(req: ChatRequest):
 @router.post("/ingest", response_model=IngestResponse)
 def ingest_document(req: IngestRequest):
     """Add a single document (text chunk) to the knowledge base."""
-    from ingest import chunk_text
     chunks = chunk_text(req.text)
     docs = [
         {"text": c, "source": req.source, "category": req.category}
@@ -106,14 +105,6 @@ def ingest_document(req: IngestRequest):
         chunks_added=len(docs),
         total_documents=chatbot.store.count(),
     )
-
-
-@router.post("/ingest/sample")
-def ingest_sample():
-    """Load the built-in sample ISS data (useful for testing)."""
-    load_sample_data(chatbot.store)
-    return {"success": True, "total_documents": chatbot.store.count()}
-
 
 @router.delete("/history")
 def clear_history():
