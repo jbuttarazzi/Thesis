@@ -12,6 +12,7 @@ Endpoints:
   DELETE /history     — clear conversation history
 """
 
+# Necessary imports to use fast api, json, and pydantic
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,9 +20,13 @@ from pydantic import BaseModel
 from typing import Optional
 import json
 
+# Import the core chatbot logic
 from chat.chatbot import ISSChatbot
+
+# Import text chunking to be used during ingestion
 from chat.ingest import chunk_text
 
+#Intialize router
 router = APIRouter()
 
 # One chatbot instance per server process
@@ -29,9 +34,7 @@ router = APIRouter()
 chatbot = ISSChatbot()
 
 
-# ─────────────────────────────────────────────
-# Schemas
-# ─────────────────────────────────────────────
+# Handling chat and ingest requests and responses
 class ChatRequest(BaseModel):
     message: str
     use_history: bool = False  # set False for stateless single-turn
@@ -54,9 +57,7 @@ class IngestResponse(BaseModel):
     total_documents: int
 
 
-# ─────────────────────────────────────────────
-# Routes
-# ─────────────────────────────────────────────
+# Check the server status, number of documents stored, and activate model
 @router.get("/health")
 def health_check():
     return {
@@ -66,23 +67,28 @@ def health_check():
     }
 
 
+# Flow of chatbot
 @router.post("/chat", response_model=ChatResponse)
 def chat(req: ChatRequest):
+    # Prevent empty messages
     if not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
     try:
+        # Generate response
         response = chatbot.chat(req.message, use_history=req.use_history)
         return ChatResponse(response=response)
     except Exception as e:
+        # Catch any unexpected backend errors
         raise HTTPException(status_code=500, detail=str(e))
 
-
+# Chat stream where response is output as it is generated
 @router.post("/chat/stream")
 def chat_stream(req: ChatRequest):
     """Stream tokens as server-sent events (SSE)."""
     if not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
+    # Function that generates response one token at a time
     def generate():
         for token in chatbot.stream_chat(req.message):
             yield f"data: {json.dumps({'token': token})}\n\n"
@@ -94,11 +100,16 @@ def chat_stream(req: ChatRequest):
 @router.post("/ingest", response_model=IngestResponse)
 def ingest_document(req: IngestRequest):
     """Add a single document (text chunk) to the knowledge base."""
+
+    # Break large documents into smaller chunks
     chunks = chunk_text(req.text)
+    # Attach metadata to each chunk
     docs = [
         {"text": c, "source": req.source, "category": req.category}
         for c in chunks
     ]
+
+    # Store chunks in vector database
     chatbot.store.add_documents(docs)
     return IngestResponse(
         success=True,
@@ -106,6 +117,7 @@ def ingest_document(req: IngestRequest):
         total_documents=chatbot.store.count(),
     )
 
+# Clears chatbots convesation memory
 @router.delete("/history")
 def clear_history():
     chatbot.clear_history()
