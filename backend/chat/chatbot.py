@@ -10,6 +10,7 @@ import numpy as np
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from typing import Optional
+import time
 
 # ─────────────────────────────────────────────
 # Config
@@ -18,24 +19,13 @@ OLLAMA_MODEL = "qwen2.5:7b"
 EMBED_MODEL = "all-MiniLM-L6-v2"   # fast, multilingual-friendly, ~80MB
 DB_PATH = "./lancedb_store"
 TABLE_NAME = "iss_knowledge"
-TOP_K = 5  # number of chunks to retrieve
+TOP_K = 3  # reduced from 5 to keep prompt shorter
 
-SYSTEM_PROMPT = """You are a helpful assistant for the International Student Services (ISS) 
-department at Hamilton College. You help international students with questions about:
-- Visa and immigration (F-1, J-1, OPT, CPT, STEM OPT)
-- Arrival and orientation procedures
-- On-campus resources and support services
-- Academic policies as they relate to international students
-- Health insurance requirements
-- Travel signatures and re-entry procedures
-
-Always be warm, clear, and patient. If you are unsure about something, say so and 
-direct the student to contact the ISS office directly. Never provide legal advice — 
-refer complex immigration questions to a DSO or PDSO.
-
-Use only the context provided below to answer questions. If the answer is not in the 
-context, say you don't have that information and suggest contacting ISS directly. Never answer anything unrelated
-to the questions listed above and always be kind/respectful."""
+SYSTEM_PROMPT = """You are a helpful assistant for Hamilton College's International Student Services (ISS).
+Help students with visa/immigration (F-1, J-1, OPT, CPT, STEM OPT), orientation, campus resources,
+academic policies, health insurance, and travel signatures. Be warm and clear.
+Never give legal advice — refer complex questions to a DSO/PDSO.
+Answer only from the context provided. If the answer isn't there, say so and suggest contacting ISS directly."""
 
 
 # ─────────────────────────────────────────────
@@ -155,7 +145,7 @@ class ISSChatbot:
     def chat(self, user_message: str, use_history: bool = True) -> str:
         """
         Send a message and get a response using RAG.
-        
+
         Args:
             user_message: The student's question
             use_history:  Whether to include conversation history (multi-turn)
@@ -174,12 +164,18 @@ Student question: {user_message}"""
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
         if use_history:
-            messages.extend(self.conversation_history)
+            # Keep only the last 4 exchanges (8 messages) to limit prompt growth
+            trimmed_history = self.conversation_history[-8:]
+            messages.extend(trimmed_history)
 
         messages.append({"role": "user", "content": augmented_prompt})
 
         # 4. Call Ollama
-        response = ollama.chat(model=OLLAMA_MODEL, messages=messages)
+        response = ollama.chat(
+            model=OLLAMA_MODEL,
+            messages=messages,
+            keep_alive=-1,  # keep model in GPU memory indefinitely
+        )
         assistant_message = response.message.content
 
         # 5. Update history (store the clean user message, not the augmented one)
@@ -194,25 +190,35 @@ Student question: {user_message}"""
         print("Conversation history cleared.")
 
     def stream_chat(self, user_message: str):
-        """
-        Stream the response token by token (generator).
-        Useful for a real-time UI feel.
-        """
+        t0 = time.time()
+
         results = self.store.search(user_message)
+        print(f"[TIMING] RAG search: {time.time() - t0:.2f}s")
+
         context = self._build_context(results)
 
-        augmented_prompt = f"""Context from ISS knowledge base:
-{context}
-
-Student question: {user_message}"""
+        # Keep only the last 4 exchanges (8 messages) to limit prompt growth
+        trimmed_history = self.conversation_history[-8:]
 
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-        messages.extend(self.conversation_history)
-        messages.append({"role": "user", "content": augmented_prompt})
+        messages.extend(trimmed_history)
+        messages.append({"role": "user", "content": f"Context:\n{context}\n\nStudent question: {user_message}"})
 
+        t1 = time.time()
+        stream = ollama.chat(
+            model=OLLAMA_MODEL,
+            messages=messages,
+            stream=True,
+            keep_alive=-1,  # keep model in GPU memory indefinitely
+        )
+        first_token = True
         full_response = ""
-        for chunk in ollama.chat(model=OLLAMA_MODEL, messages=messages, stream=True):
+
+        for chunk in stream:
             token = chunk.message.content
+            if first_token:
+                print(f"[TIMING] First token from Ollama: {time.time() - t1:.2f}s")
+                first_token = False
             full_response += token
             yield token
 

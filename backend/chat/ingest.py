@@ -18,7 +18,8 @@ from chat.chatbot import VectorStore
 # ─────────────────────────────────────────────
 # Text Chunker
 # ─────────────────────────────────────────────
-def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> list[str]:
+# Reduced chunk size for speed
+def chunk_text(text: str, chunk_size: int = 150, overlap: int = 20) -> list[str]:
     """
     Split text into overlapping chunks by word count.
     Overlap helps preserve context at chunk boundaries.
