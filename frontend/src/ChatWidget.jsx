@@ -77,7 +77,7 @@ function ChatWidget() {
 
   return (
     <div style={styles.chatContainer}>
-      <h3>Ask ISS AI Assistant</h3>
+      <h3>ISS AI Assistant</h3>
 
       {/* Scrollable message history */}
       <div style={styles.messageBox}>

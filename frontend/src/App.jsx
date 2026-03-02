@@ -15,7 +15,7 @@ function App() {
       {/* ── Header ────────────────────────────────── */}
       <header style={styles.header}>
         <h1>
-          Learning Module for Incoming Hamilton International Student Service
+          Hamilton International Student Services Learning Module
         </h1>
       </header>
 
