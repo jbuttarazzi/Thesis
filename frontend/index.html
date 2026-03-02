@@ -1,13 +1,23 @@
-<!doctype html>
-<html lang="en">
+<!doctype html> <!-- Tells the browser this is an HTML5 document -->
+<html lang="en"> <!-- Sets the page language to English (important for accessibility/screen readers) -->
   <head>
+    <!-- Sets the character encoding to UTF-8 so special characters render correctly -->
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+
+    <!-- Sets your custom earth SVG as the favicon shown in the browser tab -->
+    <link rel="icon" type="image/svg+xml" href="/earth.svg" />
+
+    <!-- Makes the page responsive — prevents mobile browsers from zooming out by default -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+
+    <!-- Displayed in the browser tab and bookmarks -->
+    <title>Hamilton ISS Learning Module</title>
   </head>
   <body>
+    <!-- The empty div that React mounts your entire app into (referenced in main.jsx) -->
     <div id="root"></div>
+
+    <!-- Loads your React app as an ES module — Vite handles bundling everything together -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
