@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 venv/
+env/
 # Video files (too large for git)
 # frontend/src/assets/videos/
 
