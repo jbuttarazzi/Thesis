@@ -1,5 +1,4 @@
-// Imports React's StrictMode — a development tool that highlights potential problems
-// (double-renders components in dev mode to catch side effects, has no effect in production)
+// Imports React's StrictMode
 import { StrictMode } from 'react'
 
 // Imports the function that mounts your React app onto the actual HTML page

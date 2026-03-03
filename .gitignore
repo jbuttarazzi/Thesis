@@ -2,7 +2,7 @@
 node_modules/
 venv/
 # Video files (too large for git)
-frontend/src/assets/videos/
+# frontend/src/assets/videos/
 
 # Python cache
 __pycache__/
