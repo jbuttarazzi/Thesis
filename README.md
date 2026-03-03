@@ -1,5 +1,5 @@
-# Thesis
-Computer science thesis project
+# Computer Science Thesis: AI-Driven Pre-arrival Orientation 
+Developers: Dominic Mauretti, Joe Buttarazzi, Oluwayanmife Adeniran
 
 **Run backend:**
 
