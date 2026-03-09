@@ -37,7 +37,7 @@ chatbot = ISSChatbot()
 # Handling chat and ingest requests and responses
 class ChatRequest(BaseModel):
     message: str
-    use_history: bool = False  # set False for stateless single-turn
+    use_history: bool = True
 
 
 class ChatResponse(BaseModel):
