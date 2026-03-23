@@ -1,6 +1,8 @@
 import { useState } from "react";
 import ChatWidget from "./ChatWidget";
 import VideoIntegration from "./video-integration/VideoIntegration";
+import HamiltonFooter from "./HamiltonFooter";
+
 
 // ── Sidebar links config — easy to add/remove entries ──────────────────────
 const SIDEBAR_LINKS = [
@@ -113,6 +115,7 @@ function App() {
 
         </main>
       </div>
+      <HamiltonFooter />
     </div>
   );
 }
