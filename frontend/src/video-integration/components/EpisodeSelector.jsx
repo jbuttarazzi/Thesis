@@ -13,6 +13,7 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
   const episodes = [
     { id: 1, title: 'Episode 1', description: 'Interactive arrival experience' },
     { id: 2, title: 'Episode 2', description: 'Continued journey' },
+    { id: 3, title: 'Episode 3', description: 'Visa Application' },
     // Add more episodes here as they're created
   ];
 
