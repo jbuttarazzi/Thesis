@@ -1,4 +1,8 @@
-# classifier.py
+"""
+classifer.py — Input and Output Guards for Chatbot
+
+"""
+
 import ollama
 
 CLASSIFIER_MODEL = "qwen2.5:3b"

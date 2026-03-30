@@ -26,11 +26,19 @@ from chat.chatbot import ISSChatbot
 # Import text chunking to be used during ingestion
 from chat.ingest import chunk_text
 
+# Import classifier functions and their canned responses
+from chat.classifier import (
+    classify_prompt,
+    classify_output,
+    BLOCKED_RESPONSES,
+    OUTPUT_BLOCKED_RESPONSES,
+)
+
 #Intialize router
 router = APIRouter()
 
 # One chatbot instance per server process
-# For production, use per-session instances with a session store (e.g. Redis)
+# For production, use per-session instances with a session store
 chatbot = ISSChatbot()
 
 
@@ -73,13 +81,26 @@ def chat(req: ChatRequest):
     # Prevent empty messages
     if not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
+
+    # Input Guard Model
+    input_label, input_allowed = classify_prompt(req.message)
+    if not input_allowed:
+        return ChatResponse(response=BLOCKED_RESPONSES[input_label])
+
     try:
         # Generate response
         response = chatbot.chat(req.message, use_history=req.use_history)
-        return ChatResponse(response=response)
     except Exception as e:
         # Catch any unexpected backend errors
         raise HTTPException(status_code=500, detail=str(e))
+
+    # Output guard model
+    output_label, output_allowed = classify_output(response)
+    if not output_allowed:
+        return ChatResponse(response=OUTPUT_BLOCKED_RESPONSES[output_label])
+
+    return ChatResponse(response=response)
+
 
 # Chat stream where response is output as it is generated
 @router.post("/chat/stream")
@@ -87,6 +108,22 @@ def chat_stream(req: ChatRequest):
     """Stream tokens as server-sent events (SSE)."""
     if not req.message.strip():
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
+
+    # Input Guard Model
+    # Must run before the generator is entered so blocked messages can still
+    # return a clean SSE response rather than an already-open stream.
+    input_label, input_allowed = classify_prompt(req.message)
+
+    if not input_allowed:
+        # Return the canned response as a normal SSE stream so the frontend
+        # doesn't need a separate code path to handle blocked messages.
+        canned = BLOCKED_RESPONSES[input_label]
+
+        def blocked_stream():
+            yield f"data: {json.dumps({'token': canned})}\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(blocked_stream(), media_type="text/event-stream")
 
     # Function that generates response one token at a time
     def generate():
@@ -116,6 +153,7 @@ def ingest_document(req: IngestRequest):
         chunks_added=len(docs),
         total_documents=chatbot.store.count(),
     )
+
 
 # Clears chatbots convesation memory
 @router.delete("/history")
