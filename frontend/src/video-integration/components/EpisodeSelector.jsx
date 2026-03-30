@@ -15,6 +15,7 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
     { id: 2, title: 'Episode 2', description: 'Continued journey' },
     { id: 3, title: 'Episode 3', description: 'Visa Application' },
     { id: 4, title: 'Episode 4', description: 'Entry Requirements' },
+    { id: 5, title: 'Episode 5', description: 'International Student Orientation' },
     // Add more episodes here as they're created
   ];
 
