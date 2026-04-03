@@ -2,7 +2,7 @@ import { useState } from "react";
 import ChatWidget from "./ChatWidget";
 import VideoIntegration from "./video-integration/VideoIntegration";
 import HamiltonFooter from "./HamiltonFooter";
-
+import WelcomePage from "./WelcomePage";
 
 // ── Sidebar links config — easy to add/remove entries ──────────────────────
 const SIDEBAR_LINKS = [
@@ -22,13 +22,13 @@ const SIDEBAR_LINKS = [
       { label: "Student Health Services",    href: "https://www.hamilton.edu/offices/health" },
     ],
   },
-  //{
-    //category: "Tax & Finance",
-    //links: [
-      //{ label: "Sprintax (Tax Filing)",      href: "https://www.sprintax.com" },
-      //{ label: "IRS Nonresident Aliens",     href: "https://www.irs.gov/individuals/international-taxpayers/nonresident-aliens" },
-    //],
-  //},
+  {
+    category: "Tax & Finance",
+    links: [
+      { label: "Sprintax (Tax Filing)",      href: "https://www.sprintax.com" },
+      { label: "IRS Nonresident Aliens",     href: "https://www.irs.gov/individuals/international-taxpayers/nonresident-aliens" },
+    ],
+  },
 ];
 
 const SIDEBAR_WIDTH = 260;
@@ -63,8 +63,13 @@ function Sidebar({ open }) {
 }
 
 function App() {
+  const [entered, setEntered]         = useState(false);
   const [showVideos, setShowVideos]   = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  if (!entered) {
+    return <WelcomePage onEnter={() => setEntered(true)} />;
+  }
 
   return (
     <div style={styles.root}>
