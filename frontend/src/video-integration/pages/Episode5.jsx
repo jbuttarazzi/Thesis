@@ -62,6 +62,7 @@ const Episode5 = () => {
       {currentStep === 1 && (
         <VideoPlayer
           src="/src/assets/videos/Episode5/scene1.mp4"
+          subtitlePath="/src/assets/videos/Episode5/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />

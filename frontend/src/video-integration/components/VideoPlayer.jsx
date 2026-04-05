@@ -8,18 +8,31 @@
  * - src: String - The URL or path to the video file
  * - onEnded: Function - Callback function triggered when video finishes playing
  * - autoPlay: Boolean (default: false) - Whether the video should start playing automatically
+ * - subtitlePath: String (optional) - The path to the .vtt subtitle file
  */
-const VideoPlayer = ({ src, onEnded, autoPlay = false }) => {
+const VideoPlayer = ({ src, onEnded, autoPlay = false, subtitlePath }) => {
   return (
     <div className="video-player">
       {/* HTML5 video element with responsive sizing */}
       <video 
         src={src}
-        controls // Show video controls (play, pause, volume, etc.)
+        controls
         autoPlay={autoPlay}
-        onEnded={onEnded} // Trigger callback when video ends
+        onEnded={onEnded}
         style={{ width: '100%', maxWidth: '800px' }}
-      />
+        crossOrigin="anonymous"
+      >
+        {/* Subtitle track - must be .vtt format, not .srt */}
+        {subtitlePath && (
+          <track 
+            kind="subtitles" 
+            srcLang="en" 
+            label="English"
+            src={subtitlePath}
+            default
+          />
+        )}
+      </video>
     </div>
   );
 };

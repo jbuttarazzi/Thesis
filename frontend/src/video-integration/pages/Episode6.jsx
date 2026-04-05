@@ -87,6 +87,7 @@ const Episode6 = ({ onBackToEpisodes }) => {
       {currentStep === 1 && (
         <VideoPlayer
           src="/src/assets/videos/Episode6/scene1.mp4"
+          subtitlePath="/src/assets/videos/Episode6/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />

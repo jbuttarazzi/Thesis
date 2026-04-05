@@ -73,12 +73,22 @@ const Episode1 = () => {
     setCurrentStep(6);
   };
 
+  /**
+   * Helper: Convert video path to subtitle path
+   * Replaces .mp4 extension with .vtt
+   */
+  const getSubtitlePath = (videoPath) => {
+    if (!videoPath) return null;
+    return videoPath.replace(/\.mp4$/, '.vtt');
+  };
+
   return (
     <div className="episode-container" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       {/* Step 1: Introduction Video */}
       {currentStep === 1 && (
         <VideoPlayer 
-          src="/src/assets/videos/Episode_1/scene1main.mp4" 
+          src="/src/assets/videos/Episode_1/scene1main.mp4"
+          subtitlePath="/src/assets/videos/Episode_1/scene1main.vtt"
           onEnded={handleIntroVideoEnd}
           autoPlay
         />
@@ -111,6 +121,7 @@ const Episode1 = () => {
       {currentStep === 5 && selectedChoice && (
         <VideoPlayer 
           src={selectedChoice.video}
+          subtitlePath={getSubtitlePath(selectedChoice.video)}
           onEnded={handleChoiceVideoEnd}
           autoPlay
         />

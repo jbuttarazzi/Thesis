@@ -79,6 +79,7 @@ const Episode3 = () => {
       {currentStep === 1 && (
         <VideoPlayer
           src="/src/assets/videos/Episode3/scene1.mp4"
+          subtitlePath="/src/assets/videos/Episode3/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />
@@ -113,6 +114,7 @@ const Episode3 = () => {
       {currentStep === 7 && (
         <VideoPlayer
           src="/src/assets/videos/Episode3/scene7.mp4"
+          subtitlePath="/src/assets/videos/Episode3/scene7.vtt"
           onEnded={handleScene7VideoEnd}
           autoPlay
         />
