@@ -29,13 +29,11 @@ const QuizQuestionEp2 = ({ onComplete }) => {
 
   /**
    * Handler: User selects an answer
-   * If correct answer (C), shows feedback
+   * Shows feedback for both correct and incorrect answers
    */
   const handleAnswerSelect = (answerId) => {
     setSelectedAnswer(answerId);
-    if (answerId === correctAnswer) {
-      setShowFeedback(true);
-    }
+    setShowFeedback(true);
   };
 
   /**
@@ -142,20 +140,31 @@ const QuizQuestionEp2 = ({ onComplete }) => {
         </div>
       </div>
 
-      {/* Feedback section - only shown after correct answer */}
+      {/* Feedback section - shown after any answer selected */}
       {showFeedback && (
         <div style={{
-          background: '#e8f5e9',
-          border: '2px solid #4caf50',
+          background: selectedAnswer === correctAnswer ? '#e8f5e9' : '#ffebee',
+          border: `2px solid ${selectedAnswer === correctAnswer ? '#4caf50' : '#f44336'}`,
           borderRadius: '12px',
           padding: '25px',
           marginBottom: '25px'
         }}>
-          {/* Correct answer feedback */}
+          {/* Feedback label */}
+          <p style={{
+            fontSize: '18px',
+            fontWeight: '700',
+            color: selectedAnswer === correctAnswer ? '#1b5e20' : '#c62828',
+            marginBottom: '15px',
+            textAlign: 'center'
+          }}>
+            {selectedAnswer === correctAnswer ? '✓ Correct!' : '✗ Incorrect'}
+          </p>
+
+          {/* Explanation text */}
           <p style={{
             fontSize: '17px',
             lineHeight: '1.7',
-            color: '#1b5e20',
+            color: selectedAnswer === correctAnswer ? '#1b5e20' : '#b71c1c',
             marginBottom: '20px',
             fontWeight: '500'
           }}>
@@ -166,11 +175,11 @@ const QuizQuestionEp2 = ({ onComplete }) => {
           <p style={{
             fontSize: '18px',
             lineHeight: '1.6',
-            color: '#2e7d32',
+            color: selectedAnswer === correctAnswer ? '#2e7d32' : '#d32f2f',
             fontStyle: 'italic',
             fontWeight: '600',
             textAlign: 'center',
-            borderTop: '1px solid #81c784',
+            borderTop: selectedAnswer === correctAnswer ? '1px solid #81c784' : '1px solid #ef9a9a',
             paddingTop: '20px'
           }}>
             "{narration}"

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import DefinitionSlidesEp4 from '../components/DefinitionSlidesEp4';
 import DefinitionSlidesEp4CampusArrival from '../components/DefinitionSlidesEp4CampusArrival';
+import DefinitionSlidesEp4InterOrient from '../components/DefinitionSlidesEp4InterOrient';
+import QuizEp4InterOrient from '../components/QuizEp4InterOrient';
 import DefinitionSlidesEp4ApprovedLocations from '../components/DefinitionSlidesEp4ApprovedLocations';
 import DefinitionSlidesEp4ArrivalLodging from '../components/DefinitionSlidesEp4ArrivalLodging';
 import DefinitionSlidesEp4PickUpCommunication from '../components/DefinitionSlidesEp4PickUpCommunication';
@@ -32,28 +34,36 @@ const Episode4 = () => {
     setCurrentStep(4);
   };
 
-  const handleApprovedLocationsComplete = () => {
+  const handleInterOrientComplete = () => {
     setCurrentStep(5);
   };
 
-  const handleArrivalLodgingComplete = () => {
+  const handleQuizInterOrientComplete = () => {
     setCurrentStep(6);
   };
 
-  const handlePickUpCommunicationComplete = () => {
+  const handleApprovedLocationsComplete = () => {
     setCurrentStep(7);
   };
 
-  const handleFamilyGuestsComplete = () => {
+  const handleArrivalLodgingComplete = () => {
     setCurrentStep(8);
   };
 
-  const handleTravelInformationComplete = () => {
+  const handlePickUpCommunicationComplete = () => {
     setCurrentStep(9);
   };
 
-  const handleReflectionComplete = () => {
+  const handleFamilyGuestsComplete = () => {
     setCurrentStep(10);
+  };
+
+  const handleTravelInformationComplete = () => {
+    setCurrentStep(11);
+  };
+
+  const handleReflectionComplete = () => {
+    setCurrentStep(12);
   };
 
   return (
@@ -75,30 +85,38 @@ const Episode4 = () => {
       )}
 
       {currentStep === 4 && (
-        <DefinitionSlidesEp4ApprovedLocations onComplete={handleApprovedLocationsComplete} />
+        <DefinitionSlidesEp4InterOrient onComplete={handleInterOrientComplete} />
       )}
 
       {currentStep === 5 && (
-        <DefinitionSlidesEp4ArrivalLodging onComplete={handleArrivalLodgingComplete} />
+        <QuizEp4InterOrient onComplete={handleQuizInterOrientComplete} />
       )}
 
       {currentStep === 6 && (
-        <DefinitionSlidesEp4PickUpCommunication onComplete={handlePickUpCommunicationComplete} />
+        <DefinitionSlidesEp4ApprovedLocations onComplete={handleApprovedLocationsComplete} />
       )}
 
       {currentStep === 7 && (
-        <DefinitionSlidesEp4FamilyGuests onComplete={handleFamilyGuestsComplete} />
+        <DefinitionSlidesEp4ArrivalLodging onComplete={handleArrivalLodgingComplete} />
       )}
 
       {currentStep === 8 && (
-        <DefinitionSlidesEp4TravelInformation onComplete={handleTravelInformationComplete} />
+        <DefinitionSlidesEp4PickUpCommunication onComplete={handlePickUpCommunicationComplete} />
       )}
 
       {currentStep === 9 && (
-        <ReflectionEp4 onComplete={handleReflectionComplete} />
+        <DefinitionSlidesEp4FamilyGuests onComplete={handleFamilyGuestsComplete} />
       )}
 
       {currentStep === 10 && (
+        <DefinitionSlidesEp4TravelInformation onComplete={handleTravelInformationComplete} />
+      )}
+
+      {currentStep === 11 && (
+        <ReflectionEp4 onComplete={handleReflectionComplete} />
+      )}
+
+      {currentStep === 12 && (
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
