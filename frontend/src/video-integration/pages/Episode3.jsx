@@ -27,7 +27,7 @@ import ReflectionFinalEp3 from '../components/ReflectionFinalEp3';
  * 11. Travel timing flashcards
  * 12. Final reflection
  */
-const Episode3 = () => {
+const Episode3 = ({ onNextEpisode }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleScene1VideoEnd = () => {
@@ -137,7 +137,7 @@ const Episode3 = () => {
       )}
 
       {currentStep === 12 && (
-        <ReflectionFinalEp3 />
+        <ReflectionFinalEp3 onNextEpisode={onNextEpisode} episodeNumber={3} />
       )}
     </div>
   );

@@ -9,8 +9,10 @@ import { useState } from 'react';
  * 
  * Props:
  * - onSubmit: Function - Callback when form is submitted (receives form data)
+ * - onNextEpisode: Function - Callback to proceed to next episode
+ * - episodeNumber: Number - Current episode number (2)
  */
-const ReflectionFormEp2 = ({ onSubmit }) => {
+const ReflectionFormEp2 = ({ onSubmit, onNextEpisode, episodeNumber = 2 }) => {
   // Track the question text entered by the user
   const [question, setQuestion] = useState('');
   // Track whether form has been submitted
@@ -192,10 +194,42 @@ const ReflectionFormEp2 = ({ onSubmit }) => {
             fontSize: '16px',
             color: '#2e7d32',
             fontStyle: 'italic',
-            fontWeight: '500'
+            fontWeight: '500',
+            marginBottom: '30px'
           }}>
-            Thank you for completing Episode 2.
+            Thank you for completing Episode {episodeNumber}.
           </p>
+
+          {/* Continue to next episode button */}
+          {onNextEpisode && (
+            <button
+              onClick={onNextEpisode}
+              style={{
+                padding: '14px 40px',
+                fontSize: '16px',
+                fontWeight: '600',
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#0056b3';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#007bff';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 2px 8px rgba(0, 123, 255, 0.3)';
+              }}
+            >
+              Continue to Episode {episodeNumber + 1} →
+            </button>
+          )}
         </div>
       )}
     </div>

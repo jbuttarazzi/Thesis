@@ -14,7 +14,7 @@ import ReflectionEp5 from '../components/ReflectionEp5';
  * 1. Scene 1 video
  * 2. International Student Orientation flashcards
  */
-const Episode5 = () => {
+const Episode5 = ({ onNextEpisode }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleScene1VideoEnd = () => {
@@ -206,7 +206,7 @@ const Episode5 = () => {
       )}
 
       {currentStep === 10 && (
-        <ReflectionEp5 onComplete={handleReflectionComplete} />
+        <ReflectionEp5 onComplete={handleReflectionComplete} onNextEpisode={onNextEpisode} episodeNumber={5} />
       )}
     </div>
   );

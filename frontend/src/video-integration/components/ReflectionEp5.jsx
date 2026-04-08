@@ -7,8 +7,10 @@ import { useState } from 'react';
  *
  * Props:
  * - onComplete: Function - Callback when reflection is submitted
+ * - onNextEpisode: Function - Callback to proceed to next episode
+ * - episodeNumber: Number - Current episode number (5)
  */
-const ReflectionEp5 = ({ onComplete }) => {
+const ReflectionEp5 = ({ onComplete, onNextEpisode, episodeNumber = 5 }) => {
   const [reflectionText, setReflectionText] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -176,25 +178,70 @@ const ReflectionEp5 = ({ onComplete }) => {
               ✓ Great job completing Episode 5! You now have a solid understanding of international student orientation and the importance of maintaining your immigration status.
             </p>
           </div>
-          <button
-            onClick={onComplete}
+          <div
             style={{
               marginTop: '30px',
-              padding: '12px 32px',
-              fontSize: '16px',
-              fontWeight: '600',
-              fontFamily: 'inherit',
-              background: '#4caf50',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              boxShadow: '0 2px 8px rgba(76,175,80,0.3)'
+              display: 'flex',
+              gap: '16px',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
             }}
           >
-            Back to Episodes
-          </button>
+            <button
+              onClick={onComplete}
+              style={{
+                padding: '12px 32px',
+                fontSize: '16px',
+                fontWeight: '600',
+                fontFamily: 'inherit',
+                background: '#6c757d',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                boxShadow: '0 2px 8px rgba(108,117,125,0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#5a6268';
+                e.target.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#6c757d';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              Back to Episodes
+            </button>
+            {onNextEpisode && (
+              <button
+                onClick={onNextEpisode}
+                style={{
+                  padding: '12px 32px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  fontFamily: 'inherit',
+                  background: '#007bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  boxShadow: '0 2px 8px rgba(0,123,255,0.3)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#0056b3';
+                  e.target.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#007bff';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                Continue to Episode {episodeNumber + 1} →
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

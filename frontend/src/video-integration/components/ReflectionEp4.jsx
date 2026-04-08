@@ -7,15 +7,16 @@ import { useState } from 'react';
  *
  * Props:
  * - onComplete: Function - Callback when reflection is submitted
+ * - onNextEpisode: Function - Callback to proceed to next episode
+ * - episodeNumber: Number - Current episode number (4)
  */
-const ReflectionEp4 = ({ onComplete }) => {
+const ReflectionEp4 = ({ onComplete, onNextEpisode, episodeNumber = 4 }) => {
   const [reflectionText, setReflectionText] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = () => {
     if (reflectionText.trim()) {
-      if (onComplete) {
-        onComplete();
-      }
+      setIsSubmitted(true);
     }
   };
 
@@ -34,6 +35,7 @@ const ReflectionEp4 = ({ onComplete }) => {
         margin: '0 auto'
       }}
     >
+      {!isSubmitted ? (
       <div
         style={{
           background: 'white',
@@ -127,6 +129,100 @@ const ReflectionEp4 = ({ onComplete }) => {
           Tip: Press Ctrl+Enter to submit
         </p>
       </div>
+      ) : (
+        <div
+          style={{
+            background: '#e8f5e9',
+            border: '2px solid #4caf50',
+            borderRadius: '12px',
+            padding: '40px',
+            textAlign: 'center'
+          }}
+        >
+          <h3 style={{
+            fontSize: '24px',
+            fontWeight: '600',
+            color: '#2e7d32',
+            marginBottom: '20px'
+          }}>
+            ✓ Reflection Saved
+          </h3>
+
+          <p style={{
+            fontSize: '18px',
+            lineHeight: '1.7',
+            color: '#1b5e20',
+            marginBottom: '25px'
+          }}>
+            Thank you for completing Episode {episodeNumber}.
+          </p>
+
+          {/* Navigation buttons */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
+            }}
+          >
+            {onComplete && (
+              <button
+                onClick={onComplete}
+                style={{
+                  padding: '12px 32px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  background: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 8px rgba(108,117,125,0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#5a6268';
+                  e.target.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#6c757d';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                Back to Episodes
+              </button>
+            )}
+            {onNextEpisode && (
+              <button
+                onClick={onNextEpisode}
+                style={{
+                  padding: '12px 32px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  background: '#007bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = '#0056b3';
+                  e.target.style.transform = 'translateY(-2px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = '#007bff';
+                  e.target.style.transform = 'translateY(0)';
+                }}
+              >
+                Continue to Episode {episodeNumber + 1} →
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

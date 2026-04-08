@@ -7,8 +7,9 @@ import { useState } from 'react';
  *
  * Props:
  * - onComplete: Function - Callback when reflection is completed
+ * - onNextEpisode: Function (optional) - Callback to proceed to next episode
  */
-const ReflectionEp6 = ({ onComplete }) => {
+const ReflectionEp6 = ({ onComplete, onNextEpisode }) => {
   const [reflectionText, setReflectionText] = useState('');
   const [submitted, setSubmitted] = useState(false);
 

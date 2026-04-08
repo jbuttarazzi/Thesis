@@ -5,7 +5,7 @@ import { useState } from 'react';
  *
  * Final reflection prompt and closing message for Episode 3.
  */
-const ReflectionFinalEp3 = () => {
+const ReflectionFinalEp3 = ({ onNextEpisode, episodeNumber = 3 }) => {
   const [reflection, setReflection] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
@@ -164,12 +164,43 @@ const ReflectionFinalEp3 = () => {
               fontSize: '18px',
               lineHeight: '1.7',
               color: '#1b5e20',
-              margin: 0,
+              margin: '0 0 24px 0',
               fontWeight: '600'
             }}
           >
             "You are prepared. And you are not doing this alone."
           </p>
+
+          {/* Continue to next episode button */}
+          {onNextEpisode && (
+            <button
+              onClick={onNextEpisode}
+              style={{
+                padding: '14px 40px',
+                fontSize: '16px',
+                fontWeight: '600',
+                background: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = '#0056b3';
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = '#007bff';
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 2px 8px rgba(0, 123, 255, 0.3)';
+              }}
+            >
+              Continue to Episode {episodeNumber + 1} →
+            </button>
+          )}
         </div>
       )}
     </div>

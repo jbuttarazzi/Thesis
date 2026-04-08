@@ -21,7 +21,7 @@ import ReflectionFormEp2 from '../components/ReflectionFormEp2';
  * 7. Definition slides for visa and travel records
  * 8. Reflection form - I-20 questions
  */
-const Episode2 = () => {
+const Episode2 = ({ onNextEpisode }) => {
   // Track current step in the episode flow
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -150,6 +150,8 @@ const Episode2 = () => {
       {currentStep === 8 && (
         <ReflectionFormEp2 
           onSubmit={handleReflectionSubmit}
+          onNextEpisode={onNextEpisode}
+          episodeNumber={2}
         />
       )}
     </div>

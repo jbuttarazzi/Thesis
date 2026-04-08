@@ -12,13 +12,15 @@
  *
  * Props:
  *   - onSubmit: optional callback (kept for compatibility with parent component)
+ *   - onNextEpisode: callback to proceed to next episode
+ *   - episodeNumber: current episode number (1 or 2)
  */
 
 // ── Paste your Google Form embed URL here ──────────────────────────────────
 const GOOGLE_FORM_EMBED_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdZSPuBQsVSDv0F4xL9jqy0R-6qeFllkHmmWMFDAun0JzqaEQ/viewform?embedded=true";
 // ───────────────────────────────────────────────────────────────────────────
 
-const FeedbackForm = ({ onSubmit }) => {
+const FeedbackForm = ({ onSubmit, onNextEpisode, episodeNumber = 1 }) => {
   return (
     <div style={styles.wrapper}>
       {/* Section title */}
@@ -55,6 +57,20 @@ const FeedbackForm = ({ onSubmit }) => {
           Open it in a new tab ↗
         </a>
       </p>
+
+      {/* Continue to Next Episode button */}
+      {onNextEpisode && (
+        <div style={styles.buttonContainer}>
+          <button
+            onClick={onNextEpisode}
+            style={styles.continueButton}
+            onMouseEnter={(e) => e.target.style.background = '#0056b3'}
+            onMouseLeave={(e) => e.target.style.background = '#007bff'}
+          >
+            Continue to Episode {episodeNumber + 1} →
+          </button>
+        </div>
+      )}
     </div>
   );
 };
@@ -102,6 +118,25 @@ const styles = {
   link: {
     color: "#0055aa",
     textDecoration: "none",
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "32px",
+    paddingTop: "20px",
+    borderTop: "1px solid #eee",
+  },
+  continueButton: {
+    padding: "14px 40px",
+    fontSize: "16px",
+    fontWeight: "600",
+    background: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    boxShadow: "0 2px 8px rgba(0, 123, 255, 0.3)",
   },
 };
 

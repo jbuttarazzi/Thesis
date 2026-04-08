@@ -17,7 +17,7 @@ import FeedbackForm from '../components/FeedbackForm';
  * 5. Selected choice video playback
  * 6. Feedback form collection
  */
-const Episode1 = () => {
+const Episode1 = ({ onNextEpisode }) => {
   // Track current step in the episode flow (1-6)
   const [currentStep, setCurrentStep] = useState(1);
   // Store the choice object selected by user
@@ -129,7 +129,7 @@ const Episode1 = () => {
       
       {/* Step 6: Feedback Form */}
       {currentStep === 6 && (
-        <FeedbackForm onSubmit={(data) => console.log('Form submitted:', data)} />
+        <FeedbackForm onSubmit={(data) => console.log('Form submitted:', data)} onNextEpisode={onNextEpisode} episodeNumber={1} />
       )}
     </div>
   );

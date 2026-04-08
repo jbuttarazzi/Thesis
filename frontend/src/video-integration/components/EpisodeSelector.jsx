@@ -52,18 +52,20 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
               border: '2px solid #007bff',
               borderRadius: '12px',
               background: 'white',
-              transition: 'all 0.2s',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+              transition: 'all 0.3s ease',
+              boxShadow: '0 2px 8px rgba(0,123,255,0.15)'
             }}
             onMouseEnter={(e) => {
               e.target.style.background = '#f0f8ff';
-              e.target.style.transform = 'translateX(5px)';
-              e.target.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+              e.target.style.transform = 'translateY(-6px) scale(1.02)';
+              e.target.style.boxShadow = '0 12px 24px rgba(0,123,255,0.35)';
+              e.target.style.borderColor = '#0056b3';
             }}
             onMouseLeave={(e) => {
               e.target.style.background = 'white';
-              e.target.style.transform = 'translateX(0)';
-              e.target.style.boxShadow = '0 2px 4px rgba(0,0,0,0.05)';
+              e.target.style.transform = 'translateY(0) scale(1)';
+              e.target.style.boxShadow = '0 2px 8px rgba(0,123,255,0.15)';
+              e.target.style.borderColor = '#007bff';
             }}
           >
             <div style={{ 
@@ -71,7 +73,9 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
               marginBottom: '8px',
               fontSize: '20px',
               color: '#1a1a1a',
-              letterSpacing: '-0.3px'
+              letterSpacing: '-0.3px',
+              userSelect: 'none',
+              pointerEvents: 'none'
             }}>
               {episode.title}
             </div>
@@ -79,7 +83,9 @@ const EpisodeSelector = ({ onSelectEpisode }) => {
               fontSize: '15px', 
               color: '#666',
               fontWeight: '400',
-              lineHeight: '1.5'
+              lineHeight: '1.5',
+              userSelect: 'none',
+              pointerEvents: 'none'
             }}>
               {episode.description}
             </div>

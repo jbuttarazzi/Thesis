@@ -34,6 +34,18 @@ const VideoIntegration = () => {
     setSelectedEpisode(null);
   };
 
+  /**
+   * Handler: User wants to proceed to the next episode
+   * Increments the episode number (max 6)
+   */
+  const handleNextEpisode = () => {
+    if (selectedEpisode < 6) {
+      setSelectedEpisode(selectedEpisode + 1);
+      // Scroll to top when moving to next episode
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <div>
       {/* Show episode selector when no episode is selected */}
@@ -71,7 +83,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode1 />
+          <Episode1 onNextEpisode={handleNextEpisode} />
         </div>
       )}
       
@@ -105,7 +117,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode2 />
+          <Episode2 onNextEpisode={handleNextEpisode} />
         </div>
       )}
 
@@ -139,7 +151,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode3 />
+          <Episode3 onNextEpisode={handleNextEpisode} />
         </div>
       )}
 
@@ -173,7 +185,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode4 />
+          <Episode4 onNextEpisode={handleNextEpisode} />
         </div>
       )}
 
@@ -207,7 +219,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode5 />
+          <Episode5 onNextEpisode={handleNextEpisode} />
         </div>
       )}
 
@@ -241,7 +253,7 @@ const VideoIntegration = () => {
           >
             ← Back to Episodes
           </button>
-          <Episode6 onBackToEpisodes={handleBackToEpisodes} />
+          <Episode6 onBackToEpisodes={handleBackToEpisodes} onNextEpisode={handleNextEpisode} />
         </div>
       )}
       

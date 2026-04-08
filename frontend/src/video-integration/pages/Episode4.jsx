@@ -19,7 +19,7 @@ import ReflectionEp4 from '../components/ReflectionEp4';
  * 2. Entry timing flashcards (30-Day Rule + ISS Tip)
  * 3. Campus arrival timing flashcards
  */
-const Episode4 = () => {
+const Episode4 = ({ onNextEpisode }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleScene1VideoEnd = () => {
@@ -114,7 +114,7 @@ const Episode4 = () => {
       )}
 
       {currentStep === 11 && (
-        <ReflectionEp4 onComplete={handleReflectionComplete} />
+        <ReflectionEp4 onComplete={handleReflectionComplete} onNextEpisode={onNextEpisode} episodeNumber={4} />
       )}
 
       {currentStep === 12 && (
