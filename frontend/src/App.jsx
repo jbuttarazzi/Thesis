@@ -33,6 +33,10 @@ const SIDEBAR_LINKS = [
 
 const SIDEBAR_WIDTH = 260;
 
+// Total space the chat drawer occupies from the right edge (width + side gap)
+// Keep in sync with DRAWER_WIDTH + SIDE_GAP in ChatWidget.jsx
+const CHAT_PUSH_WIDTH = 504;
+
 function Sidebar({ open }) {
   return (
     <aside style={{ ...styles.sidebar, width: open ? SIDEBAR_WIDTH : 0 }}>
@@ -66,6 +70,7 @@ function App() {
   const [entered, setEntered]         = useState(false);
   const [showVideos, setShowVideos]   = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [chatOpen, setChatOpen]       = useState(false); // Lifted up so main content can react to it
 
   if (!entered) {
     return <WelcomePage onEnter={() => setEntered(true)} />;
@@ -88,6 +93,22 @@ function App() {
         <h1 style={styles.headerTitle}>
           Hamilton International Student Services Learning Module
         </h1>
+
+        {/* Chat trigger button in the header — toggles the drawer */}
+        <button
+          style={styles.chatTriggerBtn}
+          onClick={() => setChatOpen(o => !o)}
+          aria-label={chatOpen ? "Close ISS Assistant" : "Open ISS Assistant"}
+          title="ISS AI Assistant"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 3C7.03 3 3 6.58 3 11c0 2.13.9 4.06 2.36 5.48L4 21l4.7-1.55A9.27 9.27 0 0 0 12 19c4.97 0 9-3.58 9-8s-4.03-8-9-8z"
+              fill="white"
+            />
+          </svg>
+          ISS Assistant
+        </button>
       </header>
 
       {/* ── Body: sidebar + main content ────────────────────────── */}
@@ -95,7 +116,14 @@ function App() {
 
         <Sidebar open={sidebarOpen} />
 
-        <main style={styles.main}>
+        {/* Main shrinks its right margin to make room for the chat drawer */}
+        <main
+          style={{
+            ...styles.main,
+            marginRight: chatOpen ? CHAT_PUSH_WIDTH : 0,
+            transition: "margin-right 0.32s cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
+        >
 
           {/* ── Video Section ───────────────────────────────────── */}
           <section style={styles.section}>
@@ -115,7 +143,8 @@ function App() {
 
           {/* ── Chat Section ────────────────────────────────────── */}
           <section style={styles.section}>
-            <ChatWidget />
+            {/* ChatWidget is now only the drawer — trigger button is in the header above */}
+            <ChatWidget isOpen={chatOpen} setIsOpen={setChatOpen} />
           </section>
 
         </main>
@@ -147,6 +176,7 @@ const styles = {
   headerTitle: {
     margin: 0,
     fontSize: "1.4rem",
+    flex: 1,                     // pushes the chat button to the far right
   },
   toggleBtn: {
     background: "transparent",
@@ -161,6 +191,22 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  /* Chat trigger in the header — pill-shaped to match the previous design */
+  chatTriggerBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    padding: "7px 16px",
+    backgroundColor: "transparent",
+    border: "1.5px solid rgba(255,255,255,0.55)",
+    borderRadius: "20px",
+    color: "white",
+    cursor: "pointer",
+    fontSize: "0.95rem",
+    fontWeight: "500",
+    flexShrink: 0,
+    whiteSpace: "nowrap",
   },
 
   // ── Layout ──────────────────────────────────────────────────────
@@ -222,6 +268,7 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     overflowX: "hidden",
+    minWidth: 0,                 // allows flex child to shrink below content size when chat pushes it
   },
   section: {
     width: "100%",
