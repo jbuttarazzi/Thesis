@@ -68,7 +68,6 @@ function Sidebar({ open }) {
 
 function App() {
   const [entered, setEntered]         = useState(false);
-  const [showVideos, setShowVideos]   = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [chatOpen, setChatOpen]       = useState(false); // Lifted up so main content can react to it
 
@@ -111,7 +110,7 @@ function App() {
         </button>
       </header>
 
-      {/* ── Body: sidebar + main content ────────────────────────── */}
+      {/* ── Body: resources sidebar + main content ──────────────── */}
       <div style={styles.body}>
 
         <Sidebar open={sidebarOpen} />
@@ -124,32 +123,17 @@ function App() {
             transition: "margin-right 0.32s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-
-          {/* ── Video Section ───────────────────────────────────── */}
-          <section style={styles.section}>
-            <button
-              style={styles.dropdownButton}
-              onClick={() => setShowVideos(!showVideos)}
-            >
-              {showVideos ? "Hide Preparation Videos ▲" : "Show Preparation Videos ▼"}
-            </button>
-
-            {showVideos && (
-              <div style={styles.videoContainer}>
-                <VideoIntegration onBack={() => setShowVideos(false)} />
-              </div>
-            )}
-          </section>
-
-          {/* ── Chat Section ────────────────────────────────────── */}
-          <section style={styles.section}>
-            {/* ChatWidget is now only the drawer — trigger button is in the header above */}
-            <ChatWidget isOpen={chatOpen} setIsOpen={setChatOpen} />
-          </section>
-
+          {/* VideoIntegration owns its own two-column episode layout */}
+          <VideoIntegration />
         </main>
+
       </div>
+
       <HamiltonFooter />
+
+      {/* Chat drawer — fixed positioned, rendered outside the flow */}
+      <ChatWidget isOpen={chatOpen} setIsOpen={setChatOpen} />
+
     </div>
   );
 }
@@ -165,18 +149,21 @@ const styles = {
   header: {
     backgroundColor: "#003366",
     color: "white",
-    padding: "1.5rem",
+    padding: "0 1.5rem",
+    height: "60px",
     display: "flex",
     alignItems: "center",
     gap: "1rem",
     position: "sticky",          // stays visible when you scroll
     top: 0,
     zIndex: 100,
+    flexShrink: 0,
   },
   headerTitle: {
     margin: 0,
-    fontSize: "1.4rem",
+    fontSize: "1.25rem",
     flex: 1,                     // pushes the chat button to the far right
+    fontWeight: "600",
   },
   toggleBtn: {
     background: "transparent",
@@ -192,7 +179,7 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-  /* Chat trigger in the header — pill-shaped to match the previous design */
+  /* Chat trigger in the header — pill-shaped */
   chatTriggerBtn: {
     display: "flex",
     alignItems: "center",
@@ -213,9 +200,10 @@ const styles = {
   body: {
     display: "flex",
     flex: 1,
+    overflow: "hidden",          // prevents double scrollbars
   },
 
-  // ── Sidebar ─────────────────────────────────────────────────────
+  // ── Resources sidebar ────────────────────────────────────────────
   sidebar: {
     backgroundColor: "#f0f4f8",
     borderRight: "1px solid #dce3ec",
@@ -260,36 +248,13 @@ const styles = {
     transition: "background-color 0.15s",
   },
 
-  // ── Main content ────────────────────────────────────────────────
+  // ── Main content — VideoIntegration fills this entirely ──────────
   main: {
     flex: 1,
-    padding: "2rem",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    overflowX: "hidden",
+    overflow: "hidden",
     minWidth: 0,                 // allows flex child to shrink below content size when chat pushes it
-  },
-  section: {
-    width: "100%",
-    maxWidth: "800px",
-    marginBottom: "2rem",
-  },
-  dropdownButton: {
-    padding: "0.8rem 1rem",
-    fontSize: "1rem",
-    borderRadius: "6px",
-    border: "none",
-    backgroundColor: "#0066cc",
-    color: "white",
-    cursor: "pointer",
-  },
-  videoContainer: {
-    marginTop: "1rem",
-    padding: "1rem",
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    backgroundColor: "#f9f9f9",
   },
 };
 
