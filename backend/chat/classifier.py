@@ -1,7 +1,7 @@
 """
 filename: classifer.py
 
-description: Input and Output Guards for Chatbot: Two models that respond SAFE, UNSAFE, or OFF_TOPIC
+description: Input and Output Guards for Chatbot. Two models that respond SAFE, UNSAFE, or OFF_TOPIC
 
 """
 
