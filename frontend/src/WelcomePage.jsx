@@ -1,10 +1,7 @@
 /**
- * WelcomePage.jsx
- * Full-screen landing page shown before the main app.
+ * filename: WelcomePage.jsx
+ * description: Full-screen landing page shown before the main app that provides basic information about the learning module. 
  * Clicking "Get Started" hides this and reveals the main content.
- *
- * Props:
- *   onEnter: () => void  — callback that tells App.jsx to show the main content
  */
 
 const HAMILTON_BLUE = "#002f86";

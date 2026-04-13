@@ -1,3 +1,11 @@
+/**
+ * filename: ChatWidget.jsx
+ *
+ * description: Interactive chat interface component. Handles user input, streams token-by-token responses
+ * from the FastAPI backend, and displays the conversation history with auto-scroll.Connects to the /api/chat/stream 
+ * endpoint.
+ */
+
 // useState: manages all reactive data (messages, input text, loading state)
 // useRef: lets us grab HTML element directly (for auto-scrolling)
 import { useState, useRef } from "react";

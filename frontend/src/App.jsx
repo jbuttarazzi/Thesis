@@ -1,3 +1,11 @@
+/**
+ * filename: App.jsx
+ *
+ * description: Root component of the application. Manages top-level state for the welcome screen, epsiode sidebar, 
+ * and video section visibility. Renders the Hamilton header, helpful resources sidebar, video dropdown, chat interface, 
+ * and footer in a unified layout.
+ */
+
 import { useState } from "react";
 import ChatWidget from "./ChatWidget";
 import VideoIntegration from "./video-integration/VideoIntegration";

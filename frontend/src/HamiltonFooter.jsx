@@ -1,8 +1,6 @@
 /**
- * HamiltonFooter.jsx
- * Replicates the Hamilton College site footer structure.
- * Social icons use inline SVG paths since Hamilton's icon sprite
- * (/v22/images/icons.svg) is not available outside hamilton.edu.
+ * filename: HamiltonFooter.jsx
+ * description: Replicates the Hamilton College site footer structure. Social icons use inline SVG paths.
  */
 
 const SOCIAL_LINKS = [

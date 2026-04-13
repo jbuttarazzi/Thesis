@@ -1,3 +1,10 @@
+/**
+ * filename: index.css
+ * description: This CSS file establishes global default styles for the web app, including a system-based font stack, 
+ * improved text rendering, and consistent typography settings. It also resets the body’s margin and ensures the layout is 
+ * responsive by setting a minimum width and full viewport height. 
+ */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

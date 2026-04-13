@@ -1,3 +1,10 @@
+/**
+ * filename: main.jsx
+ *
+ * description: Application entry point. Mounts the root React component into the HTML document and wraps 
+ * it in StrictMode for development warnings.
+ */
+
 // Imports React's StrictMode
 import { StrictMode } from 'react'
 
