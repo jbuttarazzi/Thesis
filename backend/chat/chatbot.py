@@ -1,6 +1,8 @@
 """
-Hamilton College - International Student Services Chatbot
-RAG pipeline using Ollama (Qwen2.5) + LanceDB
+filename: chatbot.py
+
+description: Hamilton College - International Student Services Chatbot
+             RAG pipeline using Ollama (Qwen2.5) + LanceDB
 """
 
 # Necessary imports for LLM and vector data base

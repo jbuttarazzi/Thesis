@@ -1,8 +1,10 @@
 """
-backendmain.py — FastAPI Application Entry Point containing
-Hamilton College International Student Services Chatbot.
+filename: backendmain.py
 
-This file initializes and runs the backend API server.
+description: FastAPI Application Entry Point containing
+            Hamilton College International Student Services Chatbot.
+
+            This file initializes and runs the backend API server.
 """
 
 

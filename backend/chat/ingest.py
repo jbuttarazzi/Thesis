@@ -1,14 +1,16 @@
 """
-ingest.py — Populate the ISS knowledge base with documents.
+filename: ingest.py
 
-Supports:
-  - Plain text files (.txt)
-  - Markdown files (.md)
-  - PDFs (.pdf)
+description: Populate the ISS knowledge base with documents.
 
-Usage:
-  python ingest.py --dir ./docs           # ingest a folder of files
-  python ingest.py --file visa_info.txt   # ingest a single file
+            Supports:
+            - Plain text files (.txt)
+            - Markdown files (.md)
+            - PDFs (.pdf)
+
+            Usage:
+            python ingest.py --dir ./docs           # ingest a folder of files
+            python ingest.py --file visa_info.txt   # ingest a single file
 """
 
 # Necessary imports

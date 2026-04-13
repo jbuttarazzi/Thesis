@@ -1,15 +1,17 @@
 """
-api.py — FastAPI server for the ISS Chatbot
+filename: api.py
 
-Run with:
-  uvicorn api:app --reload --port 8000
+description: FastAPI server for the ISS Chatbot
+            
+            Run with:
+            uvicorn api:app --reload --port 8000
 
-Endpoints:
-  POST /chat          — single-turn or multi-turn chat
-  POST /chat/stream   — streaming response
-  POST /ingest        — add documents via API
-  GET  /health        — health check
-  DELETE /history     — clear conversation history
+            Endpoints:
+            POST /chat          — single-turn or multi-turn chat
+            POST /chat/stream   — streaming response
+            POST /ingest        — add documents via API
+            GET  /health        — health check
+            DELETE /history     — clear conversation history
 """
 
 # Necessary imports to use fast api, json, and pydantic
