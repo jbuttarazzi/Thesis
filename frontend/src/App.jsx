@@ -162,7 +162,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "1rem",
-    position: "sticky",          // stays visible when you scroll
+    position: "sticky",          // stays visible during scroll
     top: 0,
     zIndex: 100,
     flexShrink: 0,
