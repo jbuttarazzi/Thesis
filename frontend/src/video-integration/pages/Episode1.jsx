@@ -1,3 +1,10 @@
+/**
+ * filename: Episode1.jsx
+ *
+ * description: Manages the flow of episode 1 including the starting video, flashcards, interactive video selection
+ * and feedback form. 
+ */
+
 import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import InteractiveImage from '../components/InteractiveImage';

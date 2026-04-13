@@ -1,3 +1,10 @@
+/**
+ * filename: Episode6.jsx
+ *
+ * description: Manages the flow of episode 6 including the starting video, flashcards, interactive quiz section
+ * and reflection. 
+ */
+
 import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import DefinitionSlidesEp6Scene2 from '../components/DefinitionSlidesEp6Scene2';

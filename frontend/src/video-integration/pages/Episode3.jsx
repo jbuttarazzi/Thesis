@@ -1,3 +1,10 @@
+/**
+ * filename: Episode3.jsx
+ *
+ * description: Manages the flow of episode 3 including the starting video, flashcards, interactive quiz
+ * and final reflection. 
+ */
+
 import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import InteractiveImage from '../components/InteractiveImage';

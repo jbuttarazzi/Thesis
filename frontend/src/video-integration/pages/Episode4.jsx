@@ -1,3 +1,10 @@
+/**
+ * filename: Episode4.jsx
+ *
+ * description: Manages the flow of episode 4 including the starting video, flashcards, 
+ * and important information. 
+ */
+
 import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import DefinitionSlidesEp4 from '../components/DefinitionSlidesEp4';

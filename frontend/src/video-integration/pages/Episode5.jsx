@@ -1,3 +1,10 @@
+/**
+ * filename: Episode5.jsx
+ *
+ * description: Manages the flow of episode 5 including the starting video, flashcards,
+ * and reflections. 
+ */
+
 import { useState } from 'react';
 import VideoPlayer from '../components/VideoPlayer';
 import DefinitionSlidesEp5Scene2 from '../components/DefinitionSlidesEp5Scene2';
