@@ -2,8 +2,7 @@
 node_modules/
 venv/
 env/
-# Video files (too large for git)
-# frontend/src/assets/videos/
+lancedb_store/
 
 # Python cache
 __pycache__/

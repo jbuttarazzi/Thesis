@@ -51,7 +51,7 @@ async def lifespan(app: FastAPI):
                 messages=[{"role": "user", "content": "hi"}],
                 keep_alive=-1   # keep model in memory indefinitely
             )
-            print("Ollama warm-up complete — first token will now be fast.")
+            print("Ollama warm-up complete")
         except Exception as e:
             print(f"Ollama warm-up failed: {e}")
 
