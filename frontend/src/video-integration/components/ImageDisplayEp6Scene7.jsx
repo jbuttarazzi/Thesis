@@ -1,12 +1,9 @@
 import React from 'react';
 
 /**
- * ImageDisplayEp6Scene7 Component
+ * filename: ImageDisplayEp6Scene7.jsx
  *
- * Displays an image for Episode 6, Scene 7 (Campus Safety).
- *
- * Props:
- * - onComplete: Function - Callback when Continue button is clicked
+ * description: Image display component for Episode 6 Scene 7 (Campus Safety).
  */
 const ImageDisplayEp6Scene7 = ({ onComplete }) => {
   const handleContinue = () => {

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp3Travel Component
+ * filename: DefinitionSlidesEp3Travel.jsx
  *
- * Travel timing and entry flashcards for Episode 3.
+ * description: Flashcards for Episode 3 travel timing and documentation requirements.
  */
 const DefinitionSlidesEp3Travel = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

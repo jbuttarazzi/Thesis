@@ -1,14 +1,10 @@
 import { useState } from 'react';
 
 /**
- * InteractiveImage Component
+ * filename: InteractiveImage.jsx
  * 
- * Displays a scene image with highlighted elements already visible.
- * Students can view the image and click Continue to proceed.
+ * description: Full-screen scene image viewer with Continue button. Used for background context in episodes.
  * 
- * Props:
- * - src: String - The URL or path to the image file
- * - onComplete: Function - Callback function when user clicks Continue button
  */
 const InteractiveImage = ({ src, onComplete }) => {
   return (

@@ -1,13 +1,10 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp2 Component
+ * filename: DefinitionSlidesEp2.jsx
  * 
- * Displays document requirement definitions for Episode 2.
- * Students must click through all definitions before proceeding to the next step.
+ * description: Flashcards for Episode 2 required travel documents (Passport, Visa, etc).
  * 
- * Props:
- * - onComplete: Function - Callback when user has viewed all definitions
  */
 const DefinitionSlidesEp2 = ({ onComplete }) => {
   // Track current definition being displayed (0-indexed)

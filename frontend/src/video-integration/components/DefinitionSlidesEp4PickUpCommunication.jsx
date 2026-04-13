@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4PickUpCommunication Component
+ * filename: DefinitionSlidesEp4PickUpCommunication.jsx
  *
- * Pick up communication from ISS flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 communicating pick up arrangements with ISS.
  */
 const DefinitionSlidesEp4PickUpCommunication = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

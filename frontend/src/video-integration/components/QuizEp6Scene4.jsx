@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * QuizEp6Scene4 Component
+ * filename: QuizEp6Scene4.jsx
  *
- * Multiple choice quiz for Episode 6, Scene 4.
- *
- * Props:
- * - onComplete: Function - Callback when quiz is completed
+ * description: Multiple-choice quiz for Episode 6 Scene 4 about address reporting.
  */
 const QuizEp6Scene4 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);

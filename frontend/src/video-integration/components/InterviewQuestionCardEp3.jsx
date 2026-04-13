@@ -1,7 +1,7 @@
 /**
- * InterviewQuestionCardEp3 Component
+ * filename: InterviewQuestionCardEp3.jsx
  *
- * Displays an interviewer question with acceptable response themes.
+ * description: Displays common visa interview question with example responses.
  */
 const InterviewQuestionCardEp3 = ({ onComplete }) => {
   const answerThemes = [

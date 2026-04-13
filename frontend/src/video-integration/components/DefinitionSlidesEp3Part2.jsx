@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp3Part2 Component
+ * filename: DefinitionSlidesEp3Part2.jsx
  *
- * Final Episode 3 flashcards for visa process references.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Reference flashcards for Episode 3 visa timeline and processing.
  */
 const DefinitionSlidesEp3Part2 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

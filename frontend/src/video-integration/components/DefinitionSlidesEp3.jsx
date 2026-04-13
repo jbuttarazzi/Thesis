@@ -1,13 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp3 Component
+ * filename: DefinitionSlidesEp3.jsx
  *
- * Displays Episode 3 visa application flashcards one at a time.
- * Students click through all cards before continuing.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 3 visa application process and forms.
  */
 const DefinitionSlidesEp3 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

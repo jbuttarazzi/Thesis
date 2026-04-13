@@ -1,7 +1,7 @@
 /**
- * AfterInterviewPathsEp3 Component
+ * filename: AfterInterviewPathsEp3.jsx
  *
- * Displays post-interview outcomes in a tree-style layout.
+ * description: Decision tree showing three possible post-visa-interview outcomes.
  */
 const AfterInterviewPathsEp3 = ({ onComplete }) => {
   const outcomes = [

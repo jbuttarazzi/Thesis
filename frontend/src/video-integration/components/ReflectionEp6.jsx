@@ -1,13 +1,9 @@
 import { useState } from 'react';
 
 /**
- * ReflectionEp6 Component
+ * filename: ReflectionEp6.jsx
  *
- * Final reflection for Episode 6 (Contact and Reporting Requirements).
- *
- * Props:
- * - onComplete: Function - Callback when reflection is completed
- * - onNextEpisode: Function (optional) - Callback to proceed to next episode
+ * description: Text reflection form for Episode 6 final reflection on contact and reporting.
  */
 const ReflectionEp6 = ({ onComplete, onNextEpisode }) => {
   const [reflectionText, setReflectionText] = useState('');

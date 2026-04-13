@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp5Scene2 Component
+ * filename: DefinitionSlidesEp5Scene2.jsx
  *
- * International Student Orientation flashcards for Episode 5, Scene 2.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 5 international student orientation overview.
  */
 const DefinitionSlidesEp5Scene2 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

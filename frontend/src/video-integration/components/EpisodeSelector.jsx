@@ -1,11 +1,8 @@
 /**
- * EpisodeSelector Component
+ * filename: EpisodeSelector.jsx
  * 
- * Main menu for selecting which episode to play.
- * Displays all available episodes with their descriptions.
+ * description: 2x3 grid menu displaying all 6 episodes with hover effects. Click to start an episode.
  * 
- * Props:
- * - onSelectEpisode: Function - Callback when an episode is selected, receives episode ID
  */
 const EpisodeSelector = ({ onSelectEpisode }) => {
   // Array of available episodes

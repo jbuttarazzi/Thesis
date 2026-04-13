@@ -1,15 +1,10 @@
 import { useState } from 'react';
 
 /**
- * ChoiceSelector Component
+ * filename: ChoiceSelector.jsx
  * 
- * Presents users with multiple choice options that link to different videos.
- * Tracks which choices have been explored and allows users to watch multiple options.
- * Users return to this screen after each choice video ends.
+ * description: Multi-choice video selector for Episode 1. Tracks viewed choices and enables continue when ready.
  * 
- * Props:
- * - onSelect: Function - Callback when a choice is clicked, receives choice object
- * - onComplete: Function - Callback when user is ready to proceed to feedback
  */
 const ChoiceSelector = ({ onSelect, onComplete }) => {
   // Track array of choice IDs that user has already watched

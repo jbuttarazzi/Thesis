@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp6Scene5 Component
+ * filename: DefinitionSlidesEp6Scene5.jsx
  *
- * Multi-card flashcard for Understanding Enrollment (Episode 6, Scene 5).
- *
- * Props:
- * - onComplete: Function - Callback when all cards are viewed and Continue is clicked
+ * description: Flashcards for Episode 6 understanding enrollment requirements.
  */
 const DefinitionSlidesEp6Scene5 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

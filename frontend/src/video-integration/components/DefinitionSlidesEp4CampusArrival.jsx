@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4CampusArrival Component
+ * filename: DefinitionSlidesEp4CampusArrival.jsx
  *
- * Campus arrival timing flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 campus arrival timing.
  */
 const DefinitionSlidesEp4CampusArrival = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

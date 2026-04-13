@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4InterOrient Component
+ * filename: DefinitionSlidesEp4InterOrient.jsx
  *
- * Flashcard for International Student Orientation requirements (Episode 4).
- *
- * Props:
- * - onComplete: Function - Callback when flashcard is completed
+ * description: Flashcards for Episode 4 international student orientation requirements.
  */
 const DefinitionSlidesEp4InterOrient = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

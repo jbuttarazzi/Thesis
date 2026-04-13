@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp5Scene8 Component
+ * filename: DefinitionSlidesEp5Scene8.jsx
  *
- * Questions and ongoing support information with contact form for Episode 5, Scene 8.
- *
- * Props:
- * - onComplete: Function - Callback when scene is complete
+ * description: Flashcards for Episode 5 questions and ongoing support information.
  */
 const DefinitionSlidesEp5Scene8 = ({ onComplete }) => {
   const [showForm, setShowForm] = useState(false);

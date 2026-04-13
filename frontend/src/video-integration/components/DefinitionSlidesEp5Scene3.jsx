@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp5Scene3 Component
+ * filename: DefinitionSlidesEp5Scene3.jsx
  *
- * Email communication and important emails flashcards for Episode 5, Scene 3.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 5 email communication and important university emails.
  */
 const DefinitionSlidesEp5Scene3 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

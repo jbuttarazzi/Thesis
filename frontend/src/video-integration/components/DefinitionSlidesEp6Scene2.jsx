@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp6Scene2 Component
+ * filename: DefinitionSlidesEp6Scene2.jsx
  *
- * ISS guidance flashcard for U.S. telephone number reporting (Episode 6, Scene 2).
- *
- * Props:
- * - onComplete: Function - Callback when flashcard is viewed
+ * description: Flashcards for Episode 6 ISS guidance and U.S. telephone number reporting.
  */
 const DefinitionSlidesEp6Scene2 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

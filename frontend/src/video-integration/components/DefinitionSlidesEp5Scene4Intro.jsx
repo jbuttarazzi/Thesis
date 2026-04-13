@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp5Scene4Intro Component
+ * filename: DefinitionSlidesEp5Scene4Intro.jsx
  *
- * Introduction flashcard for Understanding Your Immigration Documents.
- *
- * Props:
- * - onComplete: Function - Callback when flashcard is viewed
+ * description: Introduction flashcard for Episode 5 understanding immigration documents.
  */
 const DefinitionSlidesEp5Scene4Intro = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

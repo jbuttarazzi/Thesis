@@ -1,16 +1,10 @@
 import { useState } from 'react';
 
 /**
- * ReflectionFormEp2 Component
+ * filename: ReflectionFormEp2.jsx
  * 
- * Collects student questions about their I-20.
- * Provides a text entry field for students to save their questions
- * for discussion with International Student Services.
+ * description: Text reflection form for Episode 2 where students ask I-20 questions. Shows continue button after.
  * 
- * Props:
- * - onSubmit: Function - Callback when form is submitted (receives form data)
- * - onNextEpisode: Function - Callback to proceed to next episode
- * - episodeNumber: Number - Current episode number (2)
  */
 const ReflectionFormEp2 = ({ onSubmit, onNextEpisode, episodeNumber = 2 }) => {
   // Track the question text entered by the user

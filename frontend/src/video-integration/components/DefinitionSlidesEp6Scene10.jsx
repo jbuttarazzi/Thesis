@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp6Scene10 Component
+ * filename: DefinitionSlidesEp6Scene10.jsx
  *
- * Flashcard for Questions and Ongoing Responsibility (Episode 6, Scene 10).
- *
- * Props:
- * - onComplete: Function - Callback when flashcard is completed
+ * description: Flashcards for Episode 6 ongoing responsibility and support resources.
  */
 const DefinitionSlidesEp6Scene10 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

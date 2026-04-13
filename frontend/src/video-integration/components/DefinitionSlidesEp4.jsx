@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4 Component
+ * filename: DefinitionSlidesEp4.jsx
  *
- * Entry timing flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 entry timing and the 30-day rule.
  */
 const DefinitionSlidesEp4 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

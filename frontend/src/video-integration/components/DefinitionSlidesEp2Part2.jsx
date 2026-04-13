@@ -1,13 +1,10 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp2Part2 Component
+ * filename: DefinitionSlidesEp2Part2.jsx
  * 
- * Displays I-20 field definitions for Episode 2.
- * Students must click through all definitions before proceeding to the next step.
+ * description: Flashcards for Episode 2 I-20 document fields and key details.
  * 
- * Props:
- * - onComplete: Function - Callback when user has viewed all definitions
  */
 const DefinitionSlidesEp2Part2 = ({ onComplete }) => {
   // Track current definition being displayed (0-indexed)

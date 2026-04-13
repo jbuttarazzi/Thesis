@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4FamilyGuests Component
+ * filename: DefinitionSlidesEp4FamilyGuests.jsx
  *
- * Family and guests policy flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 family and guests policy.
  */
 const DefinitionSlidesEp4FamilyGuests = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

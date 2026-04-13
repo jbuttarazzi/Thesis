@@ -1,14 +1,9 @@
 import { useState } from 'react';
 
 /**
- * ReflectionEp4 Component
+ * filename: ReflectionEp4.jsx
  *
- * Final reflection question for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when reflection is submitted
- * - onNextEpisode: Function - Callback to proceed to next episode
- * - episodeNumber: Number - Current episode number (4)
+ * description: Text reflection form for Episode 4 with completion screen and continue button.
  */
 const ReflectionEp4 = ({ onComplete, onNextEpisode, episodeNumber = 4 }) => {
   const [reflectionText, setReflectionText] = useState('');

@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp6Scene4 Component
+ * filename: DefinitionSlidesEp6Scene4.jsx
  *
- * Multi-card flashcard for Campus ID and Access (Episode 6, Scene 4).
- *
- * Props:
- * - onComplete: Function - Callback when all cards are viewed and Continue is clicked
+ * description: Flashcards for Episode 6 residence hall and housing requirements.
  */
 const DefinitionSlidesEp6Scene4 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4ApprovedLocations Component
+ * filename: DefinitionSlidesEp4ApprovedLocations.jsx
  *
- * Approved arrival locations flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 approved arrival locations.
  */
 const DefinitionSlidesEp4ApprovedLocations = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

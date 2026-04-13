@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 /**
- * ReflectionFinalEp3 Component
+ * filename: ReflectionFinalEp3.jsx
  *
- * Final reflection prompt and closing message for Episode 3.
+ * description: Text reflection form for Episode 3 with completion screen and continue button.
  */
 const ReflectionFinalEp3 = ({ onNextEpisode, episodeNumber = 3 }) => {
   const [reflection, setReflection] = useState('');

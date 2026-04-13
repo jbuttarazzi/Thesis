@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * QuizEp6Scene11 Component
+ * filename: QuizEp6Scene11.jsx
  *
- * Multiple choice quiz for Episode 6, Scene 11 (When to contact ISS).
- *
- * Props:
- * - onComplete: Function - Callback when quiz is completed
+ * description: Multiple-choice quiz for Episode 6 Scene 11 about when to contact ISS.
  */
 const QuizEp6Scene11 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);

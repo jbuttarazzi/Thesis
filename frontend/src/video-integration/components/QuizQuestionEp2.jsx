@@ -1,14 +1,10 @@
 import { useState } from 'react';
 
 /**
- * QuizQuestionEp2 Component
+ * filename: QuizQuestionEp2.jsx
  * 
- * Interactive quiz question for Episode 2.
- * Asks "Who is responsible for keeping copies of the I-20?"
- * Provides feedback when the correct answer is selected.
+ * description: Multiple-choice quiz for Episode 2 about I-20 responsibility with feedback.
  * 
- * Props:
- * - onComplete: Function - Callback when user completes the quiz
  */
 const QuizQuestionEp2 = ({ onComplete }) => {
   // Track whether an answer has been selected

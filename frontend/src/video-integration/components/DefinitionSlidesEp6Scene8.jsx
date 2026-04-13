@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp6Scene8 Component
+ * filename: DefinitionSlidesEp6Scene8.jsx
  *
- * Flashcard for campus safety policies (Episode 6, Scene 8).
- *
- * Props:
- * - onComplete: Function - Callback when flashcard is completed
+ * description: Flashcards for Episode 6 campus safety policies.
  */
 const DefinitionSlidesEp6Scene8 = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

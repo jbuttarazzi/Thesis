@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlidesEp4TravelInformation Component
+ * filename: DefinitionSlidesEp4TravelInformation.jsx
  *
- * Sharing travel information with ISS flashcards for Episode 4.
- *
- * Props:
- * - onComplete: Function - Callback when all flashcards are viewed
+ * description: Flashcards for Episode 4 sharing travel information with ISS.
  */
 const DefinitionSlidesEp4TravelInformation = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

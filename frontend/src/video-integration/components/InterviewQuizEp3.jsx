@@ -1,13 +1,9 @@
 import { useState } from 'react';
 
 /**
- * InterviewQuizEp3 Component
+ * filename: InterviewQuizEp3.jsx
  *
- * Multiple-choice interviewer quiz for post-graduation plans.
- * Correct answer: A (Return home).
- *
- * Props:
- * - onComplete: Function - Optional callback when correct answer is selected
+ * description: Multiple-choice quiz for Episode 3 visa interview question evaluation.
  */
 const InterviewQuizEp3 = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);

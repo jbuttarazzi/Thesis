@@ -1,13 +1,10 @@
 import { useState } from 'react';
 
 /**
- * DefinitionSlides Component
+ * filename: DefinitionSlides.jsx
  * 
- * Displays immigration-related definitions one at a time in a slideshow format.
- * Students must click through all definitions before proceeding to the next step.
+ * description: Flashcard slideshow for Episode 1 definitions. One definition at a time with navigation.
  * 
- * Props:
- * - onComplete: Function - Callback when user has viewed all definitions
  */
 const DefinitionSlides = ({ onComplete }) => {
   // Track current definition being displayed (0-indexed)

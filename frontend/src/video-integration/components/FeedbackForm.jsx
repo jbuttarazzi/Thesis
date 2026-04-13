@@ -1,19 +1,8 @@
 /**
- * FeedbackForm Component
- *
- * Embeds a Google Form for student feedback collection.
- *
- * HOW TO GET YOUR EMBED URL:
- *   1. Open your Google Form in edit mode
- *   2. Click "Send" (top-right)
- *   3. Click the "<>" (Embed) tab
- *   4. Copy the URL inside src="..." from the <iframe> code
- *   5. Paste it below as GOOGLE_FORM_EMBED_URL
- *
- * Props:
- *   - onSubmit: optional callback (kept for compatibility with parent component)
- *   - onNextEpisode: callback to proceed to next episode
- *   - episodeNumber: current episode number (1 or 2)
+ * filename: FeedbackForm.jsx
+ * 
+ * description: Google Form embed for Episodes 1-2 feedback. Shows form then success screen with continue button.
+ * 
  */
 
 // ── Paste your Google Form embed URL here ──────────────────────────────────

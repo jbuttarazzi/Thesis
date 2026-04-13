@@ -1,13 +1,9 @@
 import { useState } from 'react';
 
 /**
- * OrderQuizEp3 Component
+ * filename: OrderQuizEp3.jsx
  *
- * Scene 4 rearrangement quiz for visa application steps.
- * Learners reorder the steps and check their answer.
- *
- * Props:
- * - onComplete: Function - Optional callback when the correct order is submitted
+ * description: Drag-and-drop reordering quiz for correct visa application process steps.
  */
 const OrderQuizEp3 = ({ onComplete }) => {
   const [steps, setSteps] = useState([

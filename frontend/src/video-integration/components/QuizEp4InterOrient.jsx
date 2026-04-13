@@ -1,12 +1,9 @@
 import { useState } from 'react';
 
 /**
- * QuizEp4InterOrient Component
+ * filename: QuizEp4InterOrient.jsx
  *
- * Multiple choice quiz about International Student Orientation (Episode 4).
- *
- * Props:
- * - onComplete: Function - Callback when quiz is completed
+ * description: Multiple-choice quiz for Episode 4 about international student orientation.
  */
 const QuizEp4InterOrient = ({ onComplete }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);

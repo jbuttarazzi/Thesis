@@ -1,11 +1,13 @@
 #!/bin/bash
-
-# Convert all .srt files to .vtt format (WebVTT)
-# Browsers support .vtt natively but NOT .srt
+#
+# filename: convert_srt_to_vtt.sh
+#
+# description: Converts all .srt subtitle files to WebVTT (.vtt) format for browser compatibility.
+#
 
 echo "Converting .srt files to .vtt format..."
 
-for srt_file in ./frontend/src/assets/videos/**/*.srt; do
+find ../src/assets/videos -name "*.srt" -type f | while read srt_file; do
     if [ ! -f "$srt_file" ]; then
         continue
     fi
