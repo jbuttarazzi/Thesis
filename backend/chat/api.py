@@ -28,7 +28,7 @@ from chat.chatbot import ISSChatbot
 # Import text chunking to be used during ingestion
 from chat.ingest import chunk_text
 
-# Import classifier functions and their canned responses
+# Import classifier functions and their stopped responses
 from chat.classifier import (
     classify_prompt,
     classify_output,
@@ -40,7 +40,6 @@ from chat.classifier import (
 router = APIRouter()
 
 # One chatbot instance per server process
-# For production, use per-session instances with a session store
 chatbot = ISSChatbot()
 
 
@@ -112,12 +111,10 @@ def chat_stream(req: ChatRequest):
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
 
     # Input Guard Model
-    # Must run before the generator is entered so blocked messages can still
-    # return a clean SSE response rather than an already-open stream.
     input_label, input_allowed = classify_prompt(req.message)
 
     if not input_allowed:
-        # Return the canned response as a normal SSE stream so the frontend
+        # Return the stopped response as a normal SSE stream so the frontend
         # doesn't need a separate code path to handle blocked messages.
         canned = BLOCKED_RESPONSES[input_label]
 

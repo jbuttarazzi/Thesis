@@ -1,7 +1,7 @@
 """
 filename: classifer.py
 
-description: Input and Output Guards for Chatbot
+description: Input and Output Guards for Chatbot: Two models that respond SAFE, UNSAFE, or OFF_TOPIC
 
 """
 
@@ -79,7 +79,7 @@ def classify_prompt(user_message: str) -> tuple[str, bool]:
         return "UNSAFE", False  # fail closed on error
 
 
-# Canned responses for blocked messages
+# Responses for blocked messages
 BLOCKED_RESPONSES = {
     "OFF_TOPIC": (
         "I'm specifically designed to help with Hamilton College ISS topics — "

@@ -71,7 +71,6 @@ app = FastAPI(title="International Student Support API", lifespan=lifespan)
 
 # CORS (Cross-Origin Resource Sharing) Configuration allows frontend applications (e.g., React/Vite)
 # to communicate with this backend. allow_origins=["*"] allows all origins (development mode).
-# In production replace "*" with your frontend domain.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

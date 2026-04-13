@@ -17,7 +17,7 @@ import time
 
 
 OLLAMA_MODEL = "qwen2.5:7b" # Selected LLM
-EMBED_MODEL = "all-MiniLM-L6-v2" #Embedding model (# fast, multilingual-friendly, ~80MB)
+EMBED_MODEL = "all-MiniLM-L6-v2" #Embedding model
 DB_PATH = "./lancedb_store"  # Storage path for lancedb
 TABLE_NAME = "iss_knowledge"  # Vector table name
 TOP_K = 3  # Number of retrieved chunks per query 
