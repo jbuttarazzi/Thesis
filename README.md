@@ -87,26 +87,28 @@ Frontend available at `http://localhost:5173` by default.
 ## Project Structure
 
 ```
-.
-├── backendmain.py              # FastAPI app entry point
-├── chatbot.py                  # RAG pipeline and LLM interaction
-├── api.py                      # /chat and /chat/stream endpoints
-├── classifier.py               # Embedding-based input/output guards
-├── docs/                       # ISS source documents (auto-ingested on startup)
-├── requirements.txt
+└── backend/
+    ├── backendmain.py              # FastAPI app entry point
+    └── chat/
+        ├── docs/                       # ISS source documents (auto-ingested on startup)
+        ├── chatbot.py                  # RAG pipeline and LLM interaction
+        ├── api.py                      # /chat and /chat/stream endpoints
+        ├── classifier.py               # Embedding-based input/output guards
+
 └── frontend/
     ├── index.html
     ├── vite.config.js
     └── src/
+        ├── assets/             # Logos, images, branding
+        ├── video-integration/  # Video player components and episode logic
         ├── App.jsx             # Main app layout and episode routing
         ├── ChatWidget.jsx      # Floating ISS AI Assistant popup
         ├── WelcomePage.jsx     # Landing page / module overview
         ├── HamiltonFooter.jsx  # Hamilton-branded site footer
         ├── index.css
         ├── main.jsx
-        ├── assets/             # Logos, images, branding
-        ├── subtitles/          # .vtt subtitle files for each episode
-        └── video-integration/  # Video player components and episode logic
+     └── subtitles/          # .vtt subtitle files for each episode
+        ├── video-integration/  # Video player components and episode logic
 ```
 
 ---
