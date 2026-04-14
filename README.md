@@ -50,9 +50,7 @@ Students work through **six sequential episodes** covering the full internationa
 | Layer | Technology |
 |---|---|
 | LLM | Ollama (`qwen2.5:7b`) |
-| Vector Store | ChromaDB / LanceDB |
-| Classifier | `all-MiniLM-L6-v2` + scikit-learn Logistic Regression |
-| Profanity Filter | `better_profanity` |
+| Vector Store | LanceDB |
 | Backend | FastAPI (Python) |
 | Frontend | React + Vite |
 | Video | AI-generated narrative videos with `.vtt` subtitle files |
