@@ -4,7 +4,7 @@
 An interactive web application built for Hamilton College's **International Student Services (ISS)** office, designed to guide incoming international students through their pre-arrival journey. The platform combines structured video-based learning episodes, embedded knowledge checks, a curated resource hub, and an AI assistant — all within a polished Hamilton-branded interface.
 
 **Developers:** Dominic Mauretti, Joe Buttarazzi, Oluwayanmife Adeniran  
-**Client:** Director of International Student Services, Hamilton College
+**Client:** Dr. Omobonike Odegbami => Director of International Student Services, Hamilton College
 
 ---
 
