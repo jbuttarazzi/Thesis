@@ -1,7 +1,7 @@
 # Hamilton ISS Learning Module
 ### AI-Driven Pre-Arrival Orientation — Hamilton College CS Thesis
 
-An interactive web application built for Hamilton College's **International Student Services (ISS)** office, designed to guide incoming international students through their pre-arrival journey. The platform combines structured video-based learning episodes, embedded knowledge checks, a curated resource hub, and an AI assistant — all within a polished Hamilton-branded interface.
+An interactive web application built for Hamilton College's **International Student Services (ISS)** office, designed to guide incoming international students through their pre-arrival journey. The platform combines structured video-based learning episodes, embedded knowledge checks, a curated resource hub, and an AI assistant.
 
 **Developers:** Dominic Mauretti, Joe Buttarazzi, Oluwayanmife Adeniran  
 **Client:** Dr. Omobonike Odegbami => Director of International Student Services, Hamilton College
