@@ -67,6 +67,7 @@ The `./docs` directory already contains the core ISS source documents. To expand
 
 ```bash
 pip install -r requirements.txt
+cd backend
 python backendmain.py
 ```
 
