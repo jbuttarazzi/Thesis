@@ -1,225 +1,132 @@
-import { useState } from 'react';
-
 /**
  * filename: ReflectionEp4.jsx
- *
- * description: Text reflection form for Episode 4 with completion screen and continue button.
+ * 
+ * description: Google Form embed for Episode 4 feedback. Shows form then continue button.
+ * 
  */
-const ReflectionEp4 = ({ onComplete, onNextEpisode, episodeNumber = 4 }) => {
-  const [reflectionText, setReflectionText] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = () => {
-    if (reflectionText.trim()) {
-      setIsSubmitted(true);
-    }
-  };
+// ── Episode 4 Google Form URL ─────────────────────────────────────────────
+const GOOGLE_FORM_EMBED_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf5ZWFl7o_fo6OSkMrvQ8Q5PYPPKJCH1O3jQimDQDSxnryFfw/viewform?embedded=true";
+// ──────────────────────────────────────────────────────────────────────────
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-      handleSubmit();
-    }
-  };
-
+const ReflectionEp4 = ({ onNextEpisode, episodeNumber = 4 }) => {
   return (
-    <div
-      style={{
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-        padding: '40px 20px',
-        maxWidth: '700px',
-        margin: '0 auto'
-      }}
-    >
-      {!isSubmitted ? (
-      <div
-        style={{
-          background: 'white',
-          border: '2px solid #007bff',
-          borderRadius: '16px',
-          padding: '40px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-        }}
-      >
-        <h2
-          style={{
-            fontSize: '28px',
-            fontWeight: '700',
-            color: '#007bff',
-            marginBottom: '30px',
-            textAlign: 'center',
-            letterSpacing: '-0.5px'
-          }}
-        >
-          Reflection
-        </h2>
+    <div style={styles.wrapper}>
+      {/* Section title */}
+      <h1 style={styles.title}>Your Turn</h1>
 
-        <p
-          style={{
-            fontSize: '18px',
-            lineHeight: '1.7',
-            color: '#333',
-            textAlign: 'center',
-            fontWeight: '500',
-            marginBottom: '30px'
-          }}
-        >
-          What is one detail you will confirm before finalizing your travel plans?
-        </p>
+      <p style={styles.subtitle}>
+        Share your feedback using the form below. Your responses go directly to
+        the International Student Services team.
+      </p>
 
-        <textarea
-          value={reflectionText}
-          onChange={(e) => setReflectionText(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your response here..."
-          style={{
-            width: '100%',
-            minHeight: '150px',
-            padding: '15px',
-            fontSize: '16px',
-            fontFamily: 'inherit',
-            border: '2px solid #ddd',
-            borderRadius: '8px',
-            resize: 'vertical',
-            boxSizing: 'border-box',
-            color: '#333'
-          }}
-        />
-
-        <div
-          style={{
-            marginTop: '30px',
-            textAlign: 'center'
-          }}
+      {/* Google Form iframe */}
+      <div style={styles.iframeWrapper}>
+        <iframe
+          src={GOOGLE_FORM_EMBED_URL}
+          title="ISS Feedback Form"
+          style={styles.iframe}
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
         >
-          <button
-            onClick={handleSubmit}
-            disabled={!reflectionText.trim()}
-            style={{
-              padding: '12px 40px',
-              fontSize: '16px',
-              fontWeight: '600',
-              fontFamily: 'inherit',
-              background: reflectionText.trim() ? '#007bff' : '#ccc',
-              color: 'white',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: reflectionText.trim() ? 'pointer' : 'not-allowed',
-              transition: 'all 0.2s',
-              boxShadow: reflectionText.trim() ? '0 2px 8px rgba(0,123,255,0.3)' : 'none'
-            }}
-          >
-            Submit Reflection
-          </button>
-        </div>
-
-        <p
-          style={{
-            fontSize: '12px',
-            color: '#999',
-            textAlign: 'center',
-            marginTop: '15px',
-            fontStyle: 'italic'
-          }}
-        >
-          Tip: Press Ctrl+Enter to submit
-        </p>
+          Loading form…
+        </iframe>
       </div>
-      ) : (
-        <div
-          style={{
-            background: '#e8f5e9',
-            border: '2px solid #4caf50',
-            borderRadius: '12px',
-            padding: '40px',
-            textAlign: 'center'
-          }}
+
+      {/* Footer note */}
+      <p style={styles.note}>
+        Having trouble with the form?{" "}
+        <a
+          href={GOOGLE_FORM_EMBED_URL.replace("?embedded=true", "")}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.link}
         >
-          <h3 style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            color: '#2e7d32',
-            marginBottom: '20px'
-          }}>
-            ✓ Reflection Saved
-          </h3>
+          Open it in a new tab ↗
+        </a>
+      </p>
 
-          <p style={{
-            fontSize: '18px',
-            lineHeight: '1.7',
-            color: '#1b5e20',
-            marginBottom: '25px'
-          }}>
-            Thank you for completing Episode {episodeNumber}.
-          </p>
-
-          {/* Navigation buttons */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '16px',
-              justifyContent: 'center',
-              flexWrap: 'wrap'
-            }}
+      {/* Continue to Next Episode button */}
+      {onNextEpisode && (
+        <div style={styles.buttonContainer}>
+          <button
+            onClick={onNextEpisode}
+            style={styles.continueButton}
+            onMouseEnter={(e) => e.target.style.background = '#0056b3'}
+            onMouseLeave={(e) => e.target.style.background = '#007bff'}
           >
-            {onComplete && (
-              <button
-                onClick={onComplete}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  background: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 8px rgba(108,117,125,0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#5a6268';
-                  e.target.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = '#6c757d';
-                  e.target.style.transform = 'translateY(0)';
-                }}
-              >
-                Back to Episodes
-              </button>
-            )}
-            {onNextEpisode && (
-              <button
-                onClick={onNextEpisode}
-                style={{
-                  padding: '12px 32px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  background: '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = '#0056b3';
-                  e.target.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = '#007bff';
-                  e.target.style.transform = 'translateY(0)';
-                }}
-              >
-                Continue to Episode {episodeNumber + 1} →
-              </button>
-            )}
-          </div>
+            Continue to Episode {episodeNumber + 1} →
+          </button>
         </div>
       )}
     </div>
   );
+};
+
+const styles = {
+  wrapper: {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    padding: "40px 20px",
+    maxWidth: "760px",
+    margin: "0 auto",
+  },
+  title: {
+    fontSize: "36px",
+    fontWeight: "700",
+    color: "#003366",
+    marginBottom: "12px",
+    textAlign: "center",
+    letterSpacing: "-0.5px",
+  },
+  subtitle: {
+    fontSize: "16px",
+    color: "#555",
+    textAlign: "center",
+    marginBottom: "28px",
+    lineHeight: "1.6",
+  },
+  iframeWrapper: {
+    borderRadius: "12px",
+    overflow: "hidden",
+    border: "2px solid #dce3ec",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+  },
+  iframe: {
+    width: "100%",
+    height: "700px",   // ← increase if your form is long
+    display: "block",
+    background: "#fff",
+  },
+  note: {
+    fontSize: "14px",
+    color: "#888",
+    textAlign: "center",
+    marginTop: "16px",
+  },
+  link: {
+    color: "#0055aa",
+    textDecoration: "none",
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "32px",
+    paddingTop: "20px",
+    borderTop: "1px solid #eee",
+  },
+  continueButton: {
+    padding: "14px 40px",
+    fontSize: "16px",
+    fontWeight: "600",
+    background: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    boxShadow: "0 2px 8px rgba(0, 123, 255, 0.3)",
+  },
 };
 
 export default ReflectionEp4;

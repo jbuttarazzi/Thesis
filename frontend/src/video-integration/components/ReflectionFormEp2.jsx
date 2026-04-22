@@ -1,233 +1,132 @@
-import { useState } from 'react';
-
 /**
  * filename: ReflectionFormEp2.jsx
  * 
- * description: Text reflection form for Episode 2 where students ask I-20 questions. Shows continue button after.
+ * description: Google Form embed for Episode 2 feedback. Shows form then continue button.
  * 
  */
-const ReflectionFormEp2 = ({ onSubmit, onNextEpisode, episodeNumber = 2 }) => {
-  // Track the question text entered by the user
-  const [question, setQuestion] = useState('');
-  // Track whether form has been submitted
-  const [submitted, setSubmitted] = useState(false);
 
-  /**
-   * Handler: Form submission
-   * Saves the question and shows confirmation message
-   */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Create form data object
-    const formData = {
-      question: question,
-      timestamp: new Date().toISOString()
-    };
-    
-    // Call parent callback with form data
-    onSubmit(formData);
-    
-    // Show confirmation message
-    setSubmitted(true);
-  };
+// ── Episode 2 Google Form URL ─────────────────────────────────────────────
+const GOOGLE_FORM_EMBED_URL = "https://docs.google.com/forms/d/e/1FAIpQLSePbUfvs_NNhUe3KblbvSBT7t4D2m4Lr3Bin5KBT83CeeSsXg/viewform?embedded=true";
+// ──────────────────────────────────────────────────────────────────────────
 
-  /**
-   * Handler: Text input change
-   * Updates question state as user types
-   */
-  const handleQuestionChange = (e) => {
-    setQuestion(e.target.value);
-  };
-
+const ReflectionFormEp2 = ({ onNextEpisode, episodeNumber = 2 }) => {
   return (
-    <div style={{
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-      padding: '40px 20px',
-      maxWidth: '700px',
-      margin: '0 auto'
-    }}>
-      {!submitted ? (
-        // Form view - shown before submission
-        <>
-          {/* Screen title */}
-          <h2 style={{
-            fontSize: '32px',
-            fontWeight: '700',
-            color: '#007bff',
-            marginBottom: '30px',
-            textAlign: 'center',
-            letterSpacing: '-0.5px'
-          }}>
-            Your Turn
-          </h2>
+    <div style={styles.wrapper}>
+      {/* Section title */}
+      <h1 style={styles.title}>Your Turn</h1>
 
-          {/* Main prompt */}
-          <p style={{
-            fontSize: '20px',
-            lineHeight: '1.6',
-            color: '#1a1a1a',
-            marginBottom: '15px',
-            textAlign: 'center',
-            fontWeight: '500'
-          }}>
-            What questions do you have about your I-20, especially the Program of Study or dates listed?
-          </p>
+      <p style={styles.subtitle}>
+        Share your feedback using the form below. Your responses go directly to
+        the International Student Services team.
+      </p>
 
-          {/* Subtext - encouraging message */}
-          <p style={{
-            fontSize: '16px',
-            lineHeight: '1.5',
-            color: '#666',
-            marginBottom: '30px',
-            textAlign: 'center',
-            fontStyle: 'italic'
-          }}>
-            Questions are expected. Asking early helps avoid issues later.
-          </p>
+      {/* Google Form iframe */}
+      <div style={styles.iframeWrapper}>
+        <iframe
+          src={GOOGLE_FORM_EMBED_URL}
+          title="ISS Feedback Form"
+          style={styles.iframe}
+          frameBorder="0"
+          marginHeight="0"
+          marginWidth="0"
+        >
+          Loading form…
+        </iframe>
+      </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit}>
-            {/* Text entry box */}
-            <textarea
-              value={question}
-              onChange={handleQuestionChange}
-              placeholder="Enter your questions here..."
-              required
-              style={{
-                width: '100%',
-                minHeight: '150px',
-                padding: '15px',
-                fontSize: '16px',
-                fontFamily: 'inherit',
-                border: '2px solid #ddd',
-                borderRadius: '8px',
-                resize: 'vertical',
-                marginBottom: '20px',
-                lineHeight: '1.6',
-                color: '#333'
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = '#007bff';
-                e.target.style.outline = 'none';
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = '#ddd';
-              }}
-            />
+      {/* Footer note */}
+      <p style={styles.note}>
+        Having trouble with the form?{" "}
+        <a
+          href={GOOGLE_FORM_EMBED_URL.replace("?embedded=true", "")}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.link}
+        >
+          Open it in a new tab ↗
+        </a>
+      </p>
 
-            {/* Save button */}
-            <div style={{ textAlign: 'center' }}>
-              <button
-                type="submit"
-                disabled={question.trim().length === 0}
-                style={{
-                  padding: '14px 32px',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  fontFamily: 'inherit',
-                  background: question.trim().length === 0 ? '#ccc' : '#007bff',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: question.trim().length === 0 ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.2s',
-                  boxShadow: question.trim().length === 0 ? 'none' : '0 2px 8px rgba(0,123,255,0.3)'
-                }}
-                onMouseEnter={(e) => {
-                  if (question.trim().length > 0) {
-                    e.target.style.background = '#0056b3';
-                    e.target.style.transform = 'translateY(-2px)';
-                    e.target.style.boxShadow = '0 4px 12px rgba(0,123,255,0.4)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (question.trim().length > 0) {
-                    e.target.style.background = '#007bff';
-                    e.target.style.transform = 'translateY(0)';
-                    e.target.style.boxShadow = '0 2px 8px rgba(0,123,255,0.3)';
-                  }
-                }}
-              >
-                Save Question
-              </button>
-            </div>
-          </form>
-        </>
-      ) : (
-        // Confirmation view - shown after submission
-        <div style={{
-          background: '#e8f5e9',
-          border: '2px solid #4caf50',
-          borderRadius: '12px',
-          padding: '40px',
-          textAlign: 'center'
-        }}>
-          {/* Success message */}
-          <h3 style={{
-            fontSize: '24px',
-            fontWeight: '600',
-            color: '#2e7d32',
-            marginBottom: '20px'
-          }}>
-            ✓ Question Saved
-          </h3>
-
-          {/* Save confirmation message */}
-          <p style={{
-            fontSize: '18px',
-            lineHeight: '1.7',
-            color: '#1b5e20',
-            marginBottom: '25px'
-          }}>
-            Your question has been saved. You can discuss it with International Student Services at any time.
-          </p>
-
-          {/* Closing message */}
-          <p style={{
-            fontSize: '16px',
-            color: '#2e7d32',
-            fontStyle: 'italic',
-            fontWeight: '500',
-            marginBottom: '30px'
-          }}>
-            Thank you for completing Episode {episodeNumber}.
-          </p>
-
-          {/* Continue to next episode button */}
-          {onNextEpisode && (
-            <button
-              onClick={onNextEpisode}
-              style={{
-                padding: '14px 40px',
-                fontSize: '16px',
-                fontWeight: '600',
-                background: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = '#0056b3';
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 4px 12px rgba(0, 123, 255, 0.4)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#007bff';
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 2px 8px rgba(0, 123, 255, 0.3)';
-              }}
-            >
-              Continue to Episode {episodeNumber + 1} →
-            </button>
-          )}
+      {/* Continue to Next Episode button */}
+      {onNextEpisode && (
+        <div style={styles.buttonContainer}>
+          <button
+            onClick={onNextEpisode}
+            style={styles.continueButton}
+            onMouseEnter={(e) => e.target.style.background = '#0056b3'}
+            onMouseLeave={(e) => e.target.style.background = '#007bff'}
+          >
+            Continue to Episode {episodeNumber + 1} →
+          </button>
         </div>
       )}
     </div>
   );
+};
+
+const styles = {
+  wrapper: {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    padding: "40px 20px",
+    maxWidth: "760px",
+    margin: "0 auto",
+  },
+  title: {
+    fontSize: "36px",
+    fontWeight: "700",
+    color: "#003366",
+    marginBottom: "12px",
+    textAlign: "center",
+    letterSpacing: "-0.5px",
+  },
+  subtitle: {
+    fontSize: "16px",
+    color: "#555",
+    textAlign: "center",
+    marginBottom: "28px",
+    lineHeight: "1.6",
+  },
+  iframeWrapper: {
+    borderRadius: "12px",
+    overflow: "hidden",
+    border: "2px solid #dce3ec",
+    boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+  },
+  iframe: {
+    width: "100%",
+    height: "700px",   // ← increase if your form is long
+    display: "block",
+    background: "#fff",
+  },
+  note: {
+    fontSize: "14px",
+    color: "#888",
+    textAlign: "center",
+    marginTop: "16px",
+  },
+  link: {
+    color: "#0055aa",
+    textDecoration: "none",
+  },
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "center",
+    marginTop: "32px",
+    paddingTop: "20px",
+    borderTop: "1px solid #eee",
+  },
+  continueButton: {
+    padding: "14px 40px",
+    fontSize: "16px",
+    fontWeight: "600",
+    background: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+    boxShadow: "0 2px 8px rgba(0, 123, 255, 0.3)",
+  },
 };
 
 export default ReflectionFormEp2;

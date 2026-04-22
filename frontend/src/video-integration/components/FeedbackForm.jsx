@@ -5,9 +5,10 @@
  * 
  */
 
-// ── Paste your Google Form embed URL here ──────────────────────────────────
-const GOOGLE_FORM_EMBED_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdZSPuBQsVSDv0F4xL9jqy0R-6qeFllkHmmWMFDAun0JzqaEQ/viewform?embedded=true";
-// ───────────────────────────────────────────────────────────────────────────
+// ── Google Form URLs for each episode ────────────────────────────────────
+const GOOGLE_FORM_EMBED_URL_EP1 = "https://docs.google.com/forms/d/e/1FAIpQLSewpr8har8syFJEEnXR_rsn3x3WTW7TEzaEp3e8YVTyKPMDlQ/viewform?embedded=true";
+const GOOGLE_FORM_EMBED_URL = GOOGLE_FORM_EMBED_URL_EP1; // Default for backward compatibility
+// ──────────────────────────────────────────────────────────────────────────
 
 const FeedbackForm = ({ onSubmit, onNextEpisode, episodeNumber = 1 }) => {
   return (
