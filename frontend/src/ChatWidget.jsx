@@ -9,6 +9,8 @@
 // useState: manages all reactive data (messages, input text, loading state)
 // useRef: lets us grab HTML element directly (for auto-scrolling)
 import { useState, useRef } from "react";
+// For chatbot output style
+import ReactMarkdown from "react-markdown";
 
 // Height of your fixed navbar — drawer sits flush below it + a small gap
 const HEADER_HEIGHT = 60;
@@ -133,8 +135,25 @@ function ChatWidget({ isOpen, setIsOpen }) {
             }}
           >
             {m.role === "assistant" && m.text === "" && loading
-              ? <span style={styles.thinking}>Thinking...</span>
-              : m.text
+                ? <span style={styles.thinking}>Thinking...</span>
+                : (
+                    <ReactMarkdown
+                    components={{
+                        // We only take "children" and ignore the "node" and other props
+                        p: ({ children }) => <p style={{ margin: 0 }}>{children}</p>,
+                        
+                        ul: ({ children }) => (
+                        <ul style={{ margin: "0.5rem 0", paddingLeft: "1.5rem" }}>{children}</ul>
+                        ),
+                        
+                        li: ({ children }) => (
+                        <li style={{ marginBottom: "0.25rem" }}>{children}</li>
+                        )
+                    }}
+                    >
+                    {m.text || ""}
+                    </ReactMarkdown>
+                )
             }
           </div>
         ))}
@@ -229,10 +248,10 @@ const styles = {
     padding: "0.75rem 1.1rem",
     borderRadius: "12px",     
     maxWidth: "82%",          
-    whiteSpace: "pre-wrap",   
     wordBreak: "break-word",  
     lineHeight: "1.6",
     fontSize: "1rem",
+    textAlign: "left",
   },
   thinking: {
     fontStyle: "italic",
