@@ -1,18 +1,23 @@
 """
-filename: classifer.py
+filename: classifier.py
 
-description: Input and Output Guards for Chatbot. Two models that respond SAFE, UNSAFE, or OFF_TOPIC
-
+description: Input and Output Guards for Chatbot. Uses the shared Groq client 
+             to classify messages as SAFE, UNSAFE, or OFF_TOPIC.
 """
 
-import ollama
+import os
 from better_profanity import profanity
+# Import the shared singleton and model constant from your chatbot file
+from chat.chatbot import GroqClient, GROQ_MODEL
 
 profanity.load_censor_words()
 
-CLASSIFIER_MODEL = "qwen2.5:7b"
+# Use the same model constant for consistency across the app
+CLASSIFIER_MODEL = GROQ_MODEL
 
-SYSTEM_PROMPT = """You are a content filter for Hamilton College's International Student Services (ISS) chatbot.
+# --- SYSTEM PROMPTS (Specific to classification responsibilities) ---
+
+INPUT_SYSTEM_PROMPT = """You are a content filter for Hamilton College's International Student Services (ISS) chatbot.
 
 Classify the user's message into exactly one of three categories:
 
@@ -37,62 +42,6 @@ Examples:
 "what's the weather today?" → OFF_TOPIC
 """
 
-def classify_prompt(user_message: str) -> tuple[str, bool]:
-    """
-    Classify a user message before sending it to the ISS chatbot.
-    
-    Returns:
-        (label, is_allowed): label is 'SAFE' | 'OFF_TOPIC' | 'UNSAFE'
-                             is_allowed is True only for SAFE
-    """
-    # Pre-check: catch profanity/abuse before hitting the LLM
-    if profanity.contains_profanity(user_message):
-        print("UNSAFE (pre-check)")
-        return "UNSAFE", False
-
-    try:
-        response = ollama.generate(
-            model=CLASSIFIER_MODEL,
-            prompt=f"Classify this message:\n\n{user_message}",
-            system=SYSTEM_PROMPT,
-            options={
-                "temperature": 0,       # deterministic
-                "num_predict": 10,      # we only need one token basically
-                "top_p": 1.0,
-            }
-        )
-        
-        label = response["response"].strip().upper()
-        
-        # Normalize — model might say "SAFE." or "SAFE\n"
-        for known_label in ["SAFE", "OFF_TOPIC", "UNSAFE"]:
-            if known_label in label:
-                label = known_label
-                break
-        else:
-            label = "UNSAFE"  # fail-safe: if unclear, block it
-        print(label)
-        return label, label == "SAFE"
-    
-    except Exception as e:
-        print(f"[classifier] Error during classification: {e}")
-        return "UNSAFE", False  # fail closed on error
-
-
-# Responses for blocked messages
-BLOCKED_RESPONSES = {
-    "OFF_TOPIC": (
-        "I'm specifically designed to help with Hamilton College ISS topics — "
-        "things like F-1 visas, OPT/CPT, I-20s, and immigration questions. "
-        "For other questions, please reach out to the appropriate campus resource!"
-    ),
-    "UNSAFE": (
-        "I'm not able to help with that request. "
-        "If you have a question about international student services, I'm happy to assist!"
-    ),
-}
-
-# Output
 OUTPUT_SYSTEM_PROMPT = """You are a safety filter for Hamilton College's International Student Services (ISS) chatbot.
 
 Review the chatbot's response and classify it into exactly one category:
@@ -111,47 +60,93 @@ Rules:
 - Do not fact-check the response. Only assess safety and relevance.
 - A cautious, uncertain, or redirecting response is always SAFE.
 - Output only the label. No explanation, no punctuation.
+"""
 
-SAFE
-OFF_TOPIC
-UNSAFE"""
+# --- CORE FUNCTIONS ---
+
+def classify_prompt(user_message: str) -> tuple[str, bool]:
+    """Classify a user message before sending it to the ISS chatbot."""
+    
+    # 1. Local Pre-check (Fast & Free)
+    if profanity.contains_profanity(user_message):
+        print("[classifier] UNSAFE (profanity pre-check)")
+        return "UNSAFE", False
+
+    try:
+        # 2. LLM Check using the shared Groq singleton
+        response = GroqClient.get().client.chat.completions.create(
+            model=CLASSIFIER_MODEL,
+            messages=[
+                {"role": "system", "content": INPUT_SYSTEM_PROMPT},
+                {"role": "user", "content": f"Classify this message:\n\n{user_message}"},
+            ],
+            temperature=0,
+            max_tokens=10,
+            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
+        )
+
+        label = response.choices[0].message.content.strip().upper()
+        
+        # Normalize response
+        for known_label in ["SAFE", "OFF_TOPIC", "UNSAFE"]:
+            if known_label in label:
+                label = known_label
+                break
+        else:
+            label = "UNSAFE"  # Fail-safe
+
+        print(f"[classifier] Input label: {label}")
+        return label, label == "SAFE"
+    
+    except Exception as e:
+        print(f"[classifier] Input classification error: {e}")
+        return "UNSAFE", False 
 
 
 def classify_output(bot_response: str) -> tuple[str, bool]:
-    """
-    Classify the chatbot's response before sending it to the user.
-
-    Returns:
-        (label, is_allowed): label is 'SAFE' | 'OFF_TOPIC' | 'UNSAFE'
-                             is_allowed is True only for SAFE
-    """
+    """Classify the chatbot's response before sending it to the user."""
     try:
-        response = ollama.generate(
+        response = GroqClient.get().client.chat.completions.create(
             model=CLASSIFIER_MODEL,
-            prompt=f"Classify this chatbot response:\n\n{bot_response}",
-            system=OUTPUT_SYSTEM_PROMPT,
-            options={
-                "temperature": 0,
-                "num_predict": 10,
-                "top_p": 1.0,
-            }
+            messages=[
+                {"role": "system", "content": OUTPUT_SYSTEM_PROMPT},
+                {"role": "user", "content": f"Classify this chatbot response:\n\n{bot_response}"},
+            ],
+            temperature=0,
+            max_tokens=10,
+            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
         )
 
-        label = response["response"].strip().upper()
+        label = response.choices[0].message.content.strip().upper()
 
         for known_label in ["SAFE", "OFF_TOPIC", "UNSAFE"]:
             if known_label in label:
                 label = known_label
                 break
         else:
-            label = "UNSAFE"  # fail closed
+            label = "UNSAFE"
 
+        print(f"[classifier] Output label: {label}")
         return label, label == "SAFE"
 
     except Exception as e:
         print(f"[classifier] Output classification error: {e}")
         return "UNSAFE", False
 
+
+# --- RESPONSE CONSTANTS ---
+
+BLOCKED_RESPONSES = {
+    "OFF_TOPIC": (
+        "I'm specifically designed to help with Hamilton College ISS topics — "
+        "things like F-1 visas, OPT/CPT, I-20s, and immigration questions. "
+        "For other questions, please reach out to the appropriate campus resource!"
+    ),
+    "UNSAFE": (
+        "I'm not able to help with that request. "
+        "If you have a question about international student services, I'm happy to assist!"
+    ),
+}
 
 OUTPUT_BLOCKED_RESPONSES = {
     "OFF_TOPIC": (

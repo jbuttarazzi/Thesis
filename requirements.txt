@@ -8,3 +8,5 @@ pyarrow==21.0.0
 pypdf==6.8.0
 numpy==2.0.2
 better-profanity==0.7.0
+groq==1.0.0
+python-dotenv==1.2.1

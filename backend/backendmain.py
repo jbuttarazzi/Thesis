@@ -16,8 +16,6 @@ from chat.chatbot import VectorStore
 from chat.ingest import ingest_directory
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-import threading
-import ollama
 import uvicorn
 
 # Directory containing documents to ingest at startup
@@ -28,8 +26,8 @@ DOCS_DIR = Path("./chat/docs")
 async def lifespan(app: FastAPI):
     """
     FastAPI lifespan context manager that runs once at application startup (before serving requests)
-    and once at shutdown (after app stops)
-    It is used for Auto-ingestion of documents and LLM warm-up
+    and once at shutdown (after app stops).
+    Used for auto-ingestion of documents on first run.
     """
 
     store = VectorStore()
@@ -44,21 +42,7 @@ async def lifespan(app: FastAPI):
     else:
         print(f"Vector store already has {store.count()} chunks. Skipping ingestion.")
 
-    # Warm up Ollama so the model stays in memory and increases speed of first usage
-    def warm_up():
-        try:
-            print("Warming up Ollama (qwen2.5:7b)...")
-            ollama.chat(
-                model="qwen2.5:7b",
-                messages=[{"role": "user", "content": "hi"}],
-                keep_alive=-1   # keep model in memory indefinitely
-            )
-            print("Ollama warm-up complete")
-        except Exception as e:
-            print(f"Ollama warm-up failed: {e}")
-
-    # Run warm-up in background so startup is non-blocking
-    threading.Thread(target=warm_up, daemon=True).start()
+    # No warm-up needed — Groq is a remote API, first request latency is already fast.
 
     # Yield control to allow FastAPI to serve requests
     yield  
@@ -83,7 +67,7 @@ app.add_middleware(
 app.include_router(chat_router, prefix="/api")
 
 
-# Basic health endpoint used to verify the server is runnin, deployment succeeded,
+# Basic health endpoint used to verify the server is running, deployment succeeded,
 # and Reverse proxy connectivity
 @app.get("/")
 def health_check():

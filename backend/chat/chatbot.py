@@ -2,12 +2,12 @@
 filename: chatbot.py
 
 description: Hamilton College - International Student Services Chatbot
-             RAG pipeline using Ollama (Qwen2.5) + LanceDB
+             RAG pipeline using Groq (Qwen3-32b) + LanceDB
 """
 
 # Necessary imports for LLM and vector data base
 import os
-import ollama
+from groq import Groq
 import lancedb
 import numpy as np
 from pathlib import Path
@@ -15,8 +15,11 @@ from sentence_transformers import SentenceTransformer
 from typing import Optional
 import time
 
+from dotenv import load_dotenv
+load_dotenv()
 
-OLLAMA_MODEL = "qwen2.5:7b" # Selected LLM
+
+GROQ_MODEL = "qwen/qwen3-32b"    # Selected LLM (hosted on Groq)
 EMBED_MODEL = "all-MiniLM-L6-v2" #Embedding model
 DB_PATH = "./lancedb_store"  # Storage path for lancedb
 TABLE_NAME = "iss_knowledge"  # Vector table name
@@ -33,6 +36,24 @@ Guidelines:
 - If you're unsure, suggest contacting ISS directly at iss@hamilton.edu.
 - Be warm, clear, and concise."""
 
+
+# Singleton Groq client (one instance per process)
+class GroqClient:
+    _instance: Optional["GroqClient"] = None
+
+    def __init__(self):
+        api_key = os.environ.get("GROQ_API_KEY")
+        if not api_key:
+            raise RuntimeError("GROQ_API_KEY environment variable is not set.")
+        self.client = Groq(api_key=api_key)
+        print(f"Groq client initialized. Model: {GROQ_MODEL}")
+
+    # Retrieve the shared client instance and create one if it does not exist
+    @classmethod
+    def get(cls) -> "GroqClient":
+        if cls._instance is None:
+            cls._instance = cls()
+        return cls._instance
 
 
 # Singleton Embedder (ensures one instance per process avoiding repeated model initialization)
@@ -59,7 +80,7 @@ class Embedder:
         return self.model.encode(texts, normalize_embeddings=True).tolist()
 
 
-# Vector Store Lancedb Rapper (manage table creation, store embeddings + metadata, perform similarity search)
+# Vector Store LanceDB Wrapper (manage table creation, store embeddings + metadata, perform similarity search)
 class VectorStore:
     def __init__(self):
         self.db = lancedb.connect(DB_PATH)
@@ -119,28 +140,13 @@ class VectorStore:
 
 
 
-# RAG Chatbot (manage vector retrieval, build augmented prompts, maintain conversation history
-# call Ollama LLM, and support streaming responses)
+# RAG Chatbot (manage vector retrieval, build augmented prompts, maintain conversation history,
+# call Groq LLM, and support streaming responses)
 class ISSChatbot:
     def __init__(self):
         self.store = VectorStore()
+        self.groq = GroqClient.get()
         self.conversation_history: list[dict] = []
-        self._verify_ollama()
-
-    def _verify_ollama(self):
-        """Check that Ollama is running and the model is available."""
-        try:
-            models = [m.model for m in ollama.list().models]
-            if OLLAMA_MODEL not in models:
-                print(f"Model '{OLLAMA_MODEL}' not found. Pulling now...")
-                ollama.pull(OLLAMA_MODEL)
-                print("Model pulled successfully.")
-            else:
-                print(f"Model '{OLLAMA_MODEL}' is ready.")
-        except Exception as e:
-            raise RuntimeError(
-                f"Could not connect to Ollama. Is it running? (`ollama serve`)\nError: {e}"
-            )
 
     def _build_context(self, results: list[dict]) -> str:
         """Convert retrieved chunks into formatted context block."""
@@ -169,7 +175,7 @@ class ISSChatbot:
 
 Student question: {user_message}"""
 
-        #Assemble messages for the LLM
+        # Assemble messages for the LLM
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
         if use_history:
@@ -179,13 +185,13 @@ Student question: {user_message}"""
 
         messages.append({"role": "user", "content": augmented_prompt})
 
-        # Call Ollama
-        response = ollama.chat(
-            model=OLLAMA_MODEL,
+        # Call Groq
+        response = self.groq.client.chat.completions.create(
+            model=GROQ_MODEL,
             messages=messages,
-            keep_alive=-1,  # keep model in GPU memory indefinitely
+            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
         )
-        assistant_message = response.message.content
+        assistant_message = response.choices[0].message.content
 
         # Update history (store the clean user message, not the augmented one)
         if use_history:
@@ -216,19 +222,22 @@ Student question: {user_message}"""
         messages.append({"role": "user", "content": f"Context:\n{context}\n\nStudent question: {user_message}"})
 
         t1 = time.time()
-        stream = ollama.chat(
-            model=OLLAMA_MODEL,
+
+        # Call Groq with streaming enabled
+        stream = self.groq.client.chat.completions.create(
+            model=GROQ_MODEL,
             messages=messages,
             stream=True,
-            keep_alive=-1,  # keep model in GPU memory indefinitely
+            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
         )
+
         first_token = True
         full_response = ""
 
         for chunk in stream:
-            token = chunk.message.content
-            if first_token:
-                print(f"[TIMING] First token from Ollama: {time.time() - t1:.2f}s")
+            token = chunk.choices[0].delta.content or ""
+            if first_token and token:
+                print(f"[TIMING] First token from Groq: {time.time() - t1:.2f}s")
                 first_token = False
             full_response += token
             yield token

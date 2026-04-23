@@ -51,7 +51,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     response: str
-    model: str = "qwen2.5:7b"
+    model: str = "qwen-3-32b"
 
 
 class IngestRequest(BaseModel):
@@ -66,13 +66,13 @@ class IngestResponse(BaseModel):
     total_documents: int
 
 
-# Check the server status, number of documents stored, and activate model
+# Check the server status, number of documents stored, and active model
 @router.get("/health")
 def health_check():
     return {
         "status": "ok",
         "documents_in_store": chatbot.store.count(),
-        "model": "qwen2.5:7b",
+        "model": "qwen-3-32b",
     }
 
 
