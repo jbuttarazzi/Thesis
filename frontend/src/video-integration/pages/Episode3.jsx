@@ -85,8 +85,8 @@ const Episode3 = ({ onNextEpisode }) => {
     <div className="episode-container" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       {currentStep === 1 && (
         <VideoPlayer
-          src="/src/assets/videos/Episode3/scene1.mp4"
-          subtitlePath="/src/assets/videos/Episode3/scene1.vtt"
+          src="/Videos/Episode3/scene1.mp4"
+          subtitlePath="/Videos/Episode3/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />
@@ -94,7 +94,7 @@ const Episode3 = ({ onNextEpisode }) => {
 
       {currentStep === 2 && (
         <InteractiveImage
-          src="/src/assets/videos/Episode3/scene2.png"
+          src="/Videos/Episode3/scene2.png"
           onComplete={handleScene2Complete}
         />
       )}
@@ -109,7 +109,7 @@ const Episode3 = ({ onNextEpisode }) => {
 
       {currentStep === 5 && (
         <InteractiveImage
-          src="/src/assets/videos/Episode3/scene5.png"
+          src="/Videos/Episode3/scene5.png"
           onComplete={handleScene5Complete}
         />
       )}
@@ -120,8 +120,8 @@ const Episode3 = ({ onNextEpisode }) => {
 
       {currentStep === 7 && (
         <VideoPlayer
-          src="/src/assets/videos/Episode3/scene7.mp4"
-          subtitlePath="/src/assets/videos/Episode3/scene7.vtt"
+          src="/Videos/Episode3/scene7.mp4"
+          subtitlePath="/Videos/Episode3/scene7.vtt"
           onEnded={handleScene7VideoEnd}
           autoPlay
         />
