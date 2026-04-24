@@ -39,7 +39,7 @@ const ImageDisplayEp6Scene7 = ({ onComplete }) => {
         }}
       >
         <img
-          src="/src/assets/videos/Episode6/scene7.png"
+          src="/Videos/Episode6/scene7.png"
           alt="Campus Safety"
           style={{
             maxWidth: '100%',
