@@ -102,8 +102,8 @@ const Episode2 = ({ onNextEpisode }) => {
       {/* Step 1: Introduction Video */}
       {currentStep === 1 && (
         <VideoPlayer 
-          src="/src/assets/videos/Episode2/scene1.mp4" 
-          subtitlePath="/src/assets/videos/Episode2/scene1.vtt"
+          src="/Videos/Episode2/scene1.mp4" 
+          subtitlePath="/Videos/Episode2/scene1.vtt"
           onEnded={handleIntroVideoEnd}
           autoPlay
         />
@@ -112,7 +112,7 @@ const Episode2 = ({ onNextEpisode }) => {
       {/* Step 2: Scene Image */}
       {currentStep === 2 && (
         <InteractiveImage 
-          src="/src/assets/videos/Episode2/scene2.png"
+          src="/Videos/Episode2/scene2.png"
           onComplete={handleImageComplete}
         />
       )}
@@ -127,7 +127,7 @@ const Episode2 = ({ onNextEpisode }) => {
       {/* Step 4: Scene 3 Image */}
       {currentStep === 4 && (
         <InteractiveImage 
-          src="/src/assets/videos/Episode2/scene3.jpeg"
+          src="/Videos/Episode2/scene3.jpeg"
           onComplete={handleScene3Complete}
         />
       )}
