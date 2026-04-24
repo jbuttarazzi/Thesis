@@ -68,8 +68,8 @@ const Episode5 = ({ onNextEpisode }) => {
     <div className="episode-container" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       {currentStep === 1 && (
         <VideoPlayer
-          src="/src/assets/videos/Episode5/scene1.mp4"
-          subtitlePath="/src/assets/videos/Episode5/scene1.vtt"
+          src="/Videos/Episode5/scene1.mp4"
+          subtitlePath="/Videos/Episode5/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />
@@ -91,7 +91,7 @@ const Episode5 = ({ onNextEpisode }) => {
           textAlign: 'center'
         }}>
           <img
-            src="/src/assets/videos/Episode5/scene4.png"
+            src="/Videos/Episode5/scene4.png"
             alt="Scene 4"
             style={{
               maxWidth: '100%',
@@ -138,7 +138,7 @@ const Episode5 = ({ onNextEpisode }) => {
           textAlign: 'center'
         }}>
           <img
-            src="/src/assets/videos/Episode5/scene6.png"
+            src="/Videos/Episode5/scene6.png"
             alt="Scene 6"
             style={{
               maxWidth: '100%',
@@ -177,7 +177,7 @@ const Episode5 = ({ onNextEpisode }) => {
           textAlign: 'center'
         }}>
           <img
-            src="/src/assets/videos/Episode5/scene7.png"
+            src="/Videos/Episode5/scene7.png"
             alt="Scene 7"
             style={{
               maxWidth: '100%',
