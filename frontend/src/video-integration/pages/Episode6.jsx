@@ -93,8 +93,8 @@ const Episode6 = ({ onBackToEpisodes }) => {
     <div className="episode-container" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
       {currentStep === 1 && (
         <VideoPlayer
-          src="/src/assets/videos/Episode6/scene1.mp4"
-          subtitlePath="/src/assets/videos/Episode6/scene1.vtt"
+          src="/Videos/Episode6/scene1.mp4"
+          subtitlePath="/Videos/Episode6/scene1.vtt"
           onEnded={handleScene1VideoEnd}
           autoPlay
         />
