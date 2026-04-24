@@ -13,10 +13,10 @@ const ChoiceSelector = ({ onSelect, onComplete }) => {
   // Array of available choices with their associated videos
   // Each choice represents a first reaction scenario
   const choices = [
-    { id: 1, title: 'Call family', video: '/src/assets/videos/Episode_1/scene3.mp4' },
-    { id: 2, title: 'Read the email again', video: '/src/assets/videos/Episode_1/scene4.mp4' },
-    { id: 3, title: 'Google the school', video: '/src/assets/videos/Episode_1/scene5.mp4' },
-    { id: 4, title: 'Sit quietly and breathe', video: '/src/assets/videos/Episode_1/scene6.mp4' },
+    { id: 1, title: 'Call family', video: '/Videos/Episode_1/scene3.mp4' },
+    { id: 2, title: 'Read the email again', video: '/Videos/Episode_1/scene4.mp4' },
+    { id: 3, title: 'Google the school', video: '/Videos/Episode_1/scene5.mp4' },
+    { id: 4, title: 'Sit quietly and breathe', video: '/Videos/Episode_1/scene6.mp4' },
   ];
 
   /**
