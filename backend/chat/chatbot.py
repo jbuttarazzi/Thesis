@@ -9,7 +9,6 @@ description: Hamilton College - International Student Services Chatbot
 import os
 from groq import Groq
 import lancedb
-import numpy as np
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from typing import Optional
