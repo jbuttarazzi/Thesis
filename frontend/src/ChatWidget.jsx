@@ -46,7 +46,7 @@ function ChatWidget({ isOpen, setIsOpen }) {
 
     try {
       // POST the user's message to your FastAPI streaming endpoint
-      const response = await fetch("http://localhost:8000/api/chat/stream", {
+      const response = await fetch("https://iss-orientation.onrender.com/api/chat/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: currentInput, use_history: true }), // Sends the message and tells the backend to use conversation history
