@@ -15,7 +15,7 @@ CLASSIFIER_MODEL = GROQ_MODEL
 
 # --- SYSTEM PROMPTS ---
 
-INPUT_SYSTEM_PROMPT = """You are a strict Gatekeeper for Hamilton College's International Student Services (ISS) chatbot. 
+INPUT_SYSTEM_PROMPT = """You are a Gatekeeper for Hamilton College's International Student Services (ISS) chatbot. 
 
 Classify the user's message into exactly one of three categories: SAFE, OFF_TOPIC, or UNSAFE.
 
