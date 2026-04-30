@@ -130,7 +130,7 @@ class VectorStore:
         results = (
             self.table.search(query_vec)
             .limit(top_k)
-            .select(["text", "source", "category"])
+            .select(["text", "source", "category", "_distance"])
             .to_list()
         )
         return results
@@ -169,6 +169,11 @@ class ISSChatbot:
         results = self.store.search(user_message)
         context = self._build_context(results)
 
+        # Log retrieved chunks for debugging
+        print(f"[RAG] Query: {user_message}")
+        for r in results:
+            print(f"  [{r['source']}]: {r['text'][:120]}")
+
         # Build the augmented user prompt
         augmented_prompt = f"""Context from ISS knowledge base:
 {context}
@@ -189,7 +194,6 @@ Student question: {user_message}"""
         response = self.groq.client.chat.completions.create(
             model=GROQ_MODEL,
             messages=messages,
-            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
         )
         assistant_message = response.choices[0].message.content
 
@@ -212,6 +216,11 @@ Student question: {user_message}"""
         results = self.store.search(user_message)
         print(f"[TIMING] RAG search: {time.time() - t0:.2f}s")
 
+        # Log retrieved chunks for debugging
+        print(f"[RAG] Query: {user_message}")
+        for r in results:
+            print(f"  [{r['source']}]: {r['text'][:120]}")
+
         context = self._build_context(results)
 
         # Keep only the last 4 exchanges (8 messages) to limit prompt growth
@@ -219,7 +228,7 @@ Student question: {user_message}"""
 
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         messages.extend(trimmed_history)
-        messages.append({"role": "user", "content": f"Context:\n{context}\n\nStudent question: {user_message}"})
+        messages.append({"role": "user", "content": f"Context from ISS knowledge base:\n{context}\n\nStudent question: {user_message}"})
 
         t1 = time.time()
 
@@ -228,14 +237,23 @@ Student question: {user_message}"""
             model=GROQ_MODEL,
             messages=messages,
             stream=True,
-            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
         )
 
         first_token = True
         full_response = ""
+        in_thinking = False
 
         for chunk in stream:
             token = chunk.choices[0].delta.content or ""
+
+            # Track and skip Qwen3 internal thinking tokens
+            if "<think>" in token:
+                in_thinking = True
+            if in_thinking:
+                if "</think>" in token:
+                    in_thinking = False
+                continue
+
             if first_token and token:
                 print(f"[TIMING] First token from Groq: {time.time() - t1:.2f}s")
                 first_token = False
