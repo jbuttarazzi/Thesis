@@ -178,8 +178,8 @@ Student question: {user_message}"""
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
         if use_history:
-            # Keep only the last 4 exchanges (8 messages) to limit prompt growth
-            trimmed_history = self.conversation_history[-8:]
+            # Keep only the last 2 exchanges (4 messages) to limit prompt growth
+            trimmed_history = self.conversation_history[-4:]
             messages.extend(trimmed_history)
 
         messages.append({"role": "user", "content": augmented_prompt})
@@ -213,8 +213,8 @@ Student question: {user_message}"""
 
         context = self._build_context(results)
 
-        # Keep only the last 4 exchanges (8 messages) to limit prompt growth
-        trimmed_history = self.conversation_history[-8:]
+        # Keep only the last 2 exchanges (4 messages) to limit prompt growth
+        trimmed_history = self.conversation_history[-4:]
 
         messages = [{"role": "system", "content": SYSTEM_PROMPT}]
         messages.extend(trimmed_history)
