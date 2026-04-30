@@ -102,7 +102,6 @@ class VectorStore:
             print(f"Created LanceDB table: {TABLE_NAME}")
         self.table = self.db.open_table(TABLE_NAME)
 
-
     def add_documents(self, docs: list[dict]):
         """
         Add documents to the vector store.
@@ -136,7 +135,6 @@ class VectorStore:
 
     def count(self) -> int:
         return self.table.count_rows()
-
 
 
 # RAG Chatbot (manage vector retrieval, build augmented prompts, maintain conversation history,
@@ -222,24 +220,34 @@ Student question: {user_message}"""
 
         t1 = time.time()
 
-        # Call Groq with streaming enabled
-        stream = self.groq.client.chat.completions.create(
-            model=GROQ_MODEL,
-            messages=messages,
-            stream=True,
-            extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
-        )
+        try:
+            # Call Groq with streaming enabled
+            stream = self.groq.client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=messages,
+                stream=True,
+                extra_body={"reasoning_effort": "none"}  # Disables reasoning tokens entirely for Qwen 3
+            )
 
-        first_token = True
-        full_response = ""
+            first_token = True
+            full_response = ""
 
-        for chunk in stream:
-            token = chunk.choices[0].delta.content or ""
-            if first_token and token:
-                print(f"[TIMING] First token from Groq: {time.time() - t1:.2f}s")
-                first_token = False
-            full_response += token
-            yield token
+            for chunk in stream:
+                token = chunk.choices[0].delta.content or ""
+                if first_token and token:
+                    print(f"[TIMING] First token from Groq: {time.time() - t1:.2f}s")
+                    first_token = False
+                full_response += token
+                yield token
 
-        self.conversation_history.append({"role": "user", "content": user_message})
-        self.conversation_history.append({"role": "assistant", "content": full_response})
+            self.conversation_history.append({"role": "user", "content": user_message})
+            self.conversation_history.append({"role": "assistant", "content": full_response})
+
+        except Exception as e:
+            error_str = str(e).lower()
+            if "rate limit" in error_str or "429" in error_str or "too many" in error_str:
+                print(f"[ERROR] Groq rate limit hit: {e}")
+                yield "⚠️ The server is busy right now — please wait 30 seconds and try again."
+            else:
+                print(f"[ERROR] Groq request failed: {e}")
+                yield "⚠️ Something went wrong on our end. Please try again in a moment."
