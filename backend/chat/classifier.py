@@ -35,6 +35,7 @@ Allowed ISS Topics (Compliance & Regulatory):
 - SEVIS registration, fees, and compliance.
 - Health insurance, SSNs, and non-resident tax forms (1042-S, W-2).
 - Contacting/visiting the Hamilton ISS office.
+- Anything else that an international student would need to know when coming to Hamilton College
 
 OFF_TOPIC Categories:
 - MIXED INTENT: Asking about a visa AND an essay, or a travel signature AND a dorm.
