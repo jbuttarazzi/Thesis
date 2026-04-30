@@ -22,7 +22,7 @@ GROQ_MODEL = "qwen/qwen3-32b"    # Selected LLM (hosted on Groq)
 EMBED_MODEL = "all-MiniLM-L6-v2" #Embedding model
 DB_PATH = "./lancedb_store"  # Storage path for lancedb
 TABLE_NAME = "iss_knowledge"  # Vector table name
-TOP_K = 3  # Number of retrieved chunks per query 
+TOP_K = 5  # Number of retrieved chunks per query 
 
 SYSTEM_PROMPT = """You are a helpful assistant for Hamilton College's International Student Services (ISS).
 
