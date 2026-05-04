@@ -5,6 +5,7 @@ import Episode3 from './pages/Episode3';
 import Episode4 from './pages/Episode4';
 import Episode5 from './pages/Episode5';
 import Episode6 from './pages/Episode6';
+import { useIsMobile } from '../useIsMobile';
 
 // ── Episode metadata — add new episodes here ────────────────────────────────
 const EPISODES = [
@@ -16,7 +17,7 @@ const EPISODES = [
   { id: 6, title: 'Episode 6', description: 'Contact and Reporting Requirements' },
 ];
 
-// ── Map episode ID → component so we avoid a long chain of conditionals ─────
+// ── Map episode ID → component ───────────────────────────────────────────────
 const EPISODE_MAP = {
   1: Episode1,
   2: Episode2,
@@ -27,7 +28,6 @@ const EPISODE_MAP = {
 };
 
 // ── Placeholder images for the welcome panel ─────────────────────────────────
-// Replace these URLs with real Hamilton ISS photos when available
 const WELCOME_IMAGES = [
   { url: 'https://i0.wp.com/thecustodianus.com/wp-content/uploads/2023/04/Hamilton-College-1.jpg?w=1800&ssl=1', alt: 'Hamilton campus' },
   { url: 'https://s3.amazonaws.com/mediacdn.hamilton.edu/images/16:9/1440/dsc4580largejpg.jpg', alt: 'International students' },
@@ -35,41 +35,59 @@ const WELCOME_IMAGES = [
   { url: 'https://www.commonapp.org/static/f230768334feef96f469f59e00b93d7b/hamilton-college_111.jpg', alt: 'Campus life' },
 ];
 
-// ── Welcome panel — shown in the right pane when no episode is selected ───────
-function WelcomePanel() {
+// ── Welcome panel ─────────────────────────────────────────────────────────────
+function WelcomePanel({ isMobile }) {
   return (
     <div style={styles.welcomePanel}>
-      {/* 2×2 image grid with a welcome overlay centered on top */}
-      <div style={styles.imageGrid}>
+      <div style={{ ...styles.imageGrid, height: isMobile ? '260px' : '420px' }}>
         {WELCOME_IMAGES.map((img, i) => (
           <div key={i} style={styles.imageCell}>
             <img src={img.url} alt={img.alt} style={styles.gridImage} />
           </div>
         ))}
 
-        {/* Dark gradient overlay + welcome text sits on top of the grid */}
         <div style={styles.overlayGradient}>
-          <div style={styles.overlayContent}>
+          <div style={{ ...styles.overlayContent, padding: isMobile ? '1.25rem' : '2.5rem' }}>
             <p style={styles.overlayEyebrow}>Hamilton College</p>
-            <h2 style={styles.overlayTitle}>International Student Services</h2>
-            <p style={styles.overlaySubtitle}>
-              Select an episode from the left to begin your orientation journey.
-            </p>
+            <h2 style={{ ...styles.overlayTitle, fontSize: isMobile ? '1.3rem' : '2rem' }}>
+              International Student Services
+            </h2>
+            {!isMobile && (
+              <p style={styles.overlaySubtitle}>
+                Select an episode from the left to begin your orientation journey.
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Cards below the image grid with quick-start info */}
-      <div style={styles.infoRow}>
+      {/* Info cards — stack vertically on mobile */}
+      <div style={{
+        ...styles.infoRow,
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: isMobile ? '1px' : '1px',
+      }}>
         {[
           { icon: '🎓', label: 'Six modules', sub: 'covering your full journey' },
           { icon: '🌐', label: 'Visa & immigration', sub: 'F-1, OPT, CPT and more' },
           { icon: '💬', label: 'AI assistant', sub: 'ask questions anytime' },
         ].map(({ icon, label, sub }) => (
-          <div key={label} style={styles.infoCard}>
-            <span style={styles.infoIcon}>{icon}</span>
-            <span style={styles.infoLabel}>{label}</span>
-            <span style={styles.infoSub}>{sub}</span>
+          <div key={label} style={{
+            ...styles.infoCard,
+            minHeight: isMobile ? '75px' : undefined,
+            flexDirection: isMobile ? 'row' : 'column',
+            alignItems: isMobile ? 'center' : 'center',
+            justifyContent: isMobile ? 'flex-start' : 'center',
+            gap: isMobile ? '0.75rem' : '4px',
+            // PUSHES THE INFO CARDS DOWN: Increased desktop padding to 3rem
+            padding: isMobile ? '0.9rem 1.25rem' : '3rem 1rem',
+            textAlign: isMobile ? 'left' : 'center',
+          }}>
+            <span style={{ ...styles.infoIcon, marginBottom: isMobile ? 0 : '4px' }}>{icon}</span>
+            <div>
+              <span style={{ ...styles.infoLabel, display: 'block' }}>{label}</span>
+              <span style={styles.infoSub}>{sub}</span>
+            </div>
           </div>
         ))}
       </div>
@@ -79,128 +97,163 @@ function WelcomePanel() {
 
 // ── Main VideoIntegration component ──────────────────────────────────────────
 const VideoIntegration = () => {
-  // Track which episode is currently selected (null = show welcome panel)
   const [selectedEpisode, setSelectedEpisode] = useState(null);
+  const isMobile = useIsMobile();
 
-  /**
-   * Handler: User selected an episode from the left panel
-   * Sets the selected episode ID to display that episode on the right
-   */
+  const showList = !isMobile || selectedEpisode === null;
+  const showContent = true;
+
   const handleSelectEpisode = (episodeId) => {
     setSelectedEpisode(episodeId);
-    window.scrollTo(0, 0); // Scroll to top when switching episodes
+    window.scrollTo(0, 0);
   };
 
-  /**
-   * Handler: User wants to proceed to the next episode
-   * Increments the episode number (max 6)
-   */
   const handleNextEpisode = () => {
     if (selectedEpisode < 6) {
       setSelectedEpisode(selectedEpisode + 1);
-      window.scrollTo(0, 0); // Scroll to top when moving to next episode
+      window.scrollTo(0, 0);
     }
   };
 
-  /**
-   * Handler: User wants to go back to the welcome panel
-   * Resets selected episode — episode list stays visible in the left panel
-   */
   const handleBackToEpisodes = () => {
     setSelectedEpisode(null);
   };
 
-  // Resolve the component for the currently selected episode
   const EpisodeComponent = selectedEpisode ? EPISODE_MAP[selectedEpisode] : null;
 
   return (
-    <div style={styles.container}>
+    <div style={{
+      ...styles.container,
+      flexDirection: isMobile ? 'column' : 'row',
+      height: isMobile ? 'auto' : '100%',
+      overflow: isMobile ? 'visible' : 'hidden',
+    }}>
 
-      {/* ── Left panel: permanent episode list ──────────────────── */}
-      <aside style={styles.episodePanel}>
-        <div style={styles.episodePanelHeader}>
-          <span style={styles.episodePanelTitle}>Modules</span>
-        </div>
-
-        <nav style={styles.episodeList}>
-          {EPISODES.map(episode => {
-            const isActive = selectedEpisode === episode.id;
-            return (
-              <button
-                key={episode.id}
-                onClick={() => handleSelectEpisode(episode.id)}
-                style={{
-                  ...styles.episodeCard,
-                  ...(isActive ? styles.episodeCardActive : {}),
-                }}
-                onMouseEnter={e => {
-                  if (!isActive) e.currentTarget.style.backgroundColor = '#eef2f8';
-                }}
-                onMouseLeave={e => {
-                  if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-              >
-                {/* Active indicator bar on the left edge */}
-                <div style={{
-                  ...styles.activeBar,
-                  opacity: isActive ? 1 : 0,
-                }} />
-
-                <div style={styles.episodeCardInner}>
-                  {/* Episode number badge */}
-                  <div style={{
-                    ...styles.episodeBadge,
-                    backgroundColor: isActive ? '#003366' : '#e2e8f0',
-                    color: isActive ? '#fff' : '#555',
-                  }}>
-                    {episode.id}
-                  </div>
-
-                  <div style={styles.episodeText}>
-                    <span style={{
-                      ...styles.episodeTitle,
-                      color: isActive ? '#003366' : '#1a1a1a',
-                    }}>
-                      {episode.title}
-                    </span>
-                    <span style={styles.episodeDesc}>{episode.description}</span>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </nav>
-      </aside>
-
-      {/* ── Right panel: welcome imagery or active episode content ── */}
-      <div style={styles.contentPanel}>
-        {!selectedEpisode && <WelcomePanel />}
-
-        {EpisodeComponent && (
-          <div style={styles.episodeContent}>
-            {/* Slim header bar above the episode with a back link */}
-            <div style={styles.episodeContentHeader}>
-              <button style={styles.backBtn} onClick={handleBackToEpisodes}>
-                ← Back to overview
-              </button>
-              <span style={styles.episodeContentLabel}>
-                {EPISODES.find(e => e.id === selectedEpisode)?.title}
-                <span style={styles.episodeContentSub}>
-                  {' · '}{EPISODES.find(e => e.id === selectedEpisode)?.description}
-                </span>
-              </span>
-            </div>
-
-            {/* Render the episode page component, passing through required handlers */}
-            <div style={styles.episodePageWrapper}>
-              <EpisodeComponent
-                onNextEpisode={handleNextEpisode}
-                onBackToEpisodes={handleBackToEpisodes}
-              />
-            </div>
+      {/* ── Episode list — hidden on mobile when an episode is open ── */}
+      {showList && (
+        <aside style={{
+          ...styles.episodePanel,
+          width: isMobile ? '100%' : '240px',
+          borderRight: isMobile ? 'none' : '1px solid #e2e8f0',
+          borderBottom: isMobile ? '1px solid #e2e8f0' : 'none',
+          maxHeight: isMobile ? '260px' : 'none',
+        }}>
+          <div style={styles.episodePanelHeader}>
+            <span style={styles.episodePanelTitle}>Modules</span>
           </div>
-        )}
-      </div>
+
+          <nav style={{
+            ...styles.episodeList,
+            flexDirection: isMobile ? 'row' : 'column',
+            overflowX: isMobile ? 'auto' : 'visible',
+            padding: isMobile ? '0.5rem' : '0.5rem 0',
+            gap: isMobile ? '0.5rem' : '0',
+          }}>
+            {EPISODES.map(episode => {
+              const isActive = selectedEpisode === episode.id;
+              return (
+                <button
+                  key={episode.id}
+                  onClick={() => handleSelectEpisode(episode.id)}
+                  style={{
+                    ...styles.episodeCard,
+                    ...(isMobile ? {
+                      flexShrink: 0,
+                      width: 'auto',
+                      borderRadius: '8px',
+                      border: isActive ? '2px solid #003366' : '1px solid #e2e8f0',
+                      backgroundColor: isActive ? '#eef2ff' : '#fff',
+                      padding: '0.5rem 0.85rem',
+                    } : {
+                      ...(isActive ? styles.episodeCardActive : {}),
+                    }),
+                  }}
+                  onMouseEnter={e => {
+                    if (!isActive && !isMobile) e.currentTarget.style.backgroundColor = '#eef2f8';
+                  }}
+                  onMouseLeave={e => {
+                    if (!isActive && !isMobile) e.currentTarget.style.backgroundColor = 'transparent';
+                  }}
+                >
+                  {!isMobile && (
+                    <div style={{ ...styles.activeBar, opacity: isActive ? 1 : 0 }} />
+                  )}
+
+                  <div style={{
+                    ...styles.episodeCardInner,
+                    // PUSHES THE SIDEBAR DOWN: Increased desktop padding to 1.5rem
+                    padding: isMobile ? '0' : '1.5rem 1rem',
+                    gap: isMobile ? '0.4rem' : '0.75rem',
+                  }}>
+                    <div style={{
+                      ...styles.episodeBadge,
+                      backgroundColor: isActive ? '#003366' : '#e2e8f0',
+                      color: isActive ? '#fff' : '#555',
+                      width: isMobile ? '24px' : '28px',
+                      height: isMobile ? '24px' : '28px',
+                      fontSize: isMobile ? '0.75rem' : '0.8rem',
+                    }}>
+                      {episode.id}
+                    </div>
+
+                    <div style={styles.episodeText}>
+                      <span style={{
+                        ...styles.episodeTitle,
+                        color: isActive ? '#003366' : '#1a1a1a',
+                        fontSize: isMobile ? '0.82rem' : '0.9rem',
+                      }}>
+                        {episode.title}
+                      </span>
+                      {!isMobile && (
+                        <span style={styles.episodeDesc}>{episode.description}</span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </nav>
+        </aside>
+      )}
+
+      {/* ── Content panel ───────────────────────────────────────────── */}
+      {showContent && (
+        <div style={{
+          ...styles.contentPanel,
+          overflow: isMobile ? 'visible' : 'auto',
+          backgroundColor: '#fff', // Use clean white background to merge seamlessly
+        }}>
+          {!selectedEpisode && <WelcomePanel isMobile={isMobile} />}
+
+          {EpisodeComponent && (
+            <div style={styles.episodeContent}>
+              <div style={{
+                ...styles.episodeContentHeader,
+                padding: isMobile ? '0.65rem 1rem' : '0.75rem 1.5rem',
+              }}>
+                <button style={styles.backBtn} onClick={handleBackToEpisodes}>
+                  ← {isMobile ? 'Episodes' : 'Back to overview'}
+                </button>
+                <span style={styles.episodeContentLabel}>
+                  {EPISODES.find(e => e.id === selectedEpisode)?.title}
+                  {!isMobile && (
+                    <span style={styles.episodeContentSub}>
+                      {' · '}{EPISODES.find(e => e.id === selectedEpisode)?.description}
+                    </span>
+                  )}
+                </span>
+              </div>
+
+              <div style={styles.episodePageWrapper}>
+                <EpisodeComponent
+                  onNextEpisode={handleNextEpisode}
+                  onBackToEpisodes={handleBackToEpisodes}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   );
@@ -208,21 +261,14 @@ const VideoIntegration = () => {
 
 // ── Styles ───────────────────────────────────────────────────────────────────
 const styles = {
-  // Two-column flex container filling the parent <main>
   container: {
     display: 'flex',
     flex: 1,
-    height: '100%',
-    overflow: 'hidden',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
   },
-
-  // ── Left episode panel ───────────────────────────────────────────
   episodePanel: {
-    width: '240px',
     flexShrink: 0,
     backgroundColor: '#f8fafc',
-    borderRight: '1px solid #e2e8f0',
     display: 'flex',
     flexDirection: 'column',
     overflowY: 'auto',
@@ -230,6 +276,7 @@ const styles = {
   episodePanelHeader: {
     padding: '1.25rem 1.25rem 0.75rem',
     borderBottom: '1px solid #e2e8f0',
+    flexShrink: 0,
   },
   episodePanelTitle: {
     fontSize: '0.75rem',
@@ -258,7 +305,6 @@ const styles = {
   episodeCardActive: {
     backgroundColor: '#eef2ff',
   },
-  // Colored left-edge bar shown on the active episode
   activeBar: {
     width: '3px',
     backgroundColor: '#003366',
@@ -270,7 +316,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.75rem',
-    padding: '0.85rem 1rem',
+    padding: '1.5rem 1rem', // Fallback for styles object
     flex: 1,
   },
   episodeBadge: {
@@ -306,30 +352,24 @@ const styles = {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
   },
-
-  // ── Right content panel ──────────────────────────────────────────
   contentPanel: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
     minWidth: 0,
-    backgroundColor: '#fff',
   },
-
-  // ── Welcome panel ────────────────────────────────────────────────
   welcomePanel: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
+    backgroundColor: '#fff', // Use clean white background to merge seamlessly
   },
-  // 2×2 CSS grid for placeholder images
   imageGrid: {
     position: 'relative',
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
     gridTemplateRows: '1fr 1fr',
-    height: '420px',
     overflow: 'hidden',
   },
   imageCell: {
@@ -340,16 +380,14 @@ const styles = {
     height: '100%',
     objectFit: 'cover',
     display: 'block',
-    filter: 'brightness(0.75)',  // Darkens images so overlay text is readable
+    filter: 'brightness(0.75)',
   },
-  // Gradient overlay covering the entire image grid
   overlayGradient: {
     position: 'absolute',
     inset: 0,
     background: 'linear-gradient(to top, rgba(0,20,60,0.82) 0%, rgba(0,20,60,0.3) 60%, transparent 100%)',
     display: 'flex',
     alignItems: 'flex-end',
-    padding: '2.5rem',
   },
   overlayContent: {
     color: '#fff',
@@ -363,7 +401,6 @@ const styles = {
     marginBottom: '0.4rem',
   },
   overlayTitle: {
-    fontSize: '2rem',
     fontWeight: '700',
     letterSpacing: '-0.5px',
     marginBottom: '0.5rem',
@@ -374,12 +411,12 @@ const styles = {
     color: 'rgba(255,255,255,0.75)',
     fontWeight: '400',
   },
-  // Row of three quick-info cards below the image grid
   infoRow: {
     display: 'flex',
     gap: '1px',
-    backgroundColor: '#e2e8f0',  // Gap color between cards
+    backgroundColor: '#e2e8f0',
     borderTop: '1px solid #e2e8f0',
+    borderBottom: '1px solid #e2e8f0', // Clean boundary before empty space
   },
   infoCard: {
     flex: 1,
@@ -387,7 +424,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     gap: '4px',
-    padding: '1.4rem 1rem',
+    padding: '3rem 1rem', // Fallback for styles object
     backgroundColor: '#fff',
     textAlign: 'center',
   },
@@ -404,19 +441,15 @@ const styles = {
     fontSize: '0.78rem',
     color: '#94a3b8',
   },
-
-  // ── Active episode content ───────────────────────────────────────
   episodeContent: {
     display: 'flex',
     flexDirection: 'column',
     flex: 1,
   },
-  // Slim breadcrumb-style header above the episode
   episodeContentHeader: {
     display: 'flex',
     alignItems: 'center',
     gap: '1rem',
-    padding: '0.75rem 1.5rem',
     borderBottom: '1px solid #e2e8f0',
     backgroundColor: '#f8fafc',
     flexShrink: 0,
@@ -444,7 +477,6 @@ const styles = {
     fontWeight: '400',
     color: '#64748b',
   },
-  // Wrapper for the episode page — scrollable if content is tall
   episodePageWrapper: {
     flex: 1,
     overflowY: 'auto',

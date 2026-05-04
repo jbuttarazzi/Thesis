@@ -4,17 +4,24 @@
  * Clicking "Get Started" hides this and reveals the main content.
  */
 
+import { useIsMobile } from "./useIsMobile";
+
 const HAMILTON_BLUE = "#002f86";
 const HAMILTON_GOLD = "#d6ba8b";
 
 export default function WelcomePage({ onEnter }) {
+  const isMobile = useIsMobile();
+
   return (
     <div style={s.page}>
 
       {/* ── Decorative top bar matching the header ───────────────── */}
       <div style={s.topBar} />
 
-      <main style={s.main}>
+      <main style={{
+        ...s.main,
+        padding: isMobile ? "2rem 1.25rem" : "3rem 1.5rem",
+      }}>
 
         {/* ── Logo / crest placeholder ─────────────────────────── */}
         <div style={s.crest}>
@@ -131,10 +138,10 @@ const s = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: "3rem 1.5rem",
     maxWidth: "640px",
     margin: "0 auto",
     width: "100%",
+    boxSizing: "border-box", // This forces the padding to stay inside the 100% width
   },
   crest: {
     marginBottom: "1.5rem",

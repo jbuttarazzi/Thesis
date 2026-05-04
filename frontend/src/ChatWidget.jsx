@@ -11,6 +11,8 @@
 import { useState, useRef } from "react";
 // For chatbot output style
 import ReactMarkdown from "react-markdown";
+// Returns true when viewport is below 640px — used to switch to full-screen mobile layout
+import { useIsMobile } from "./useIsMobile";
 
 // Height of your fixed navbar — drawer sits flush below it + a small gap
 const HEADER_HEIGHT = 60;
@@ -33,6 +35,7 @@ function ChatWidget({ isOpen, setIsOpen }) {
   const [input, setInput] = useState("");          // Current text in the input box
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);                  // Reference to an invisible div at the bottom of the chat, used to scroll down
+  const isMobile = useIsMobile();                  // True when viewport < 640px
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return; // Do nothing if input is empty or already loading
@@ -46,7 +49,7 @@ function ChatWidget({ isOpen, setIsOpen }) {
 
     try {
       // POST the user's message to your FastAPI streaming endpoint
-      const response = await fetch("https://iss-orientation.onrender.com/api/chat/stream", {
+      const response = await fetch("http://localhost:8000/api/chat/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: currentInput, use_history: true }), // Sends the message and tells the backend to use conversation history
@@ -99,7 +102,19 @@ function ChatWidget({ isOpen, setIsOpen }) {
   return (
     // Slide-in drawer — translateX(0) when open, translateX(110%) when closed
     // No overlay: the page content compresses via margin-right in App.jsx instead
-    <div style={{ ...styles.drawer, transform: isOpen ? "translateX(0)" : "translateX(110%)" }}>
+    // On mobile: overrides to fill the full screen edge-to-edge with no rounded corners
+    <div style={{
+      ...styles.drawer,
+      ...(isMobile && {
+        top: 0,
+        bottom: 0,
+        right: 0,
+        left: 0,
+        width: "100%",
+        borderRadius: 0,
+      }),
+      transform: isOpen ? "translateX(0)" : "translateX(110%)",
+    }}>
 
       {/* Drawer header bar */}
       <div style={styles.drawerHeader}>

@@ -3,7 +3,6 @@ node_modules/
 venv/
 env/
 .env
-lancedb_store/
 
 # Python cache
 __pycache__/

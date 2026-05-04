@@ -1,7 +1,7 @@
 /**
  * filename: index.css
  * description: This CSS file establishes global default styles for the web app, including a system-based font stack, 
- * improved text rendering, and consistent typography settings. It also resets the body’s margin and ensures the layout is 
+ * improved text rendering, and consistent typography settings. It also resets the body's margin and ensures the layout is 
  * responsive by setting a minimum width and full viewport height. 
  */
 
@@ -19,4 +19,21 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+}
+
+/* ── Mobile styles (viewports below 640px only) ───────────────────────────── */
+@media (max-width: 639px) {
+  /* Use dynamic viewport height so the layout isn't clipped when the
+     mobile soft keyboard slides up and shrinks the viewport */
+  body {
+    min-height: 100dvh;
+  }
+
+  /* Prevent iOS Safari from auto-zooming into focused inputs.
+     Any input with font-size < 16px triggers the zoom — this overrides that. */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
 }

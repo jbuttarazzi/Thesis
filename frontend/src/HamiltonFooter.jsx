@@ -3,17 +3,17 @@
  * description: Replicates the Hamilton College site footer structure. Social icons use inline SVG paths.
  */
 
+import { useIsMobile } from "./useIsMobile";
+
 const SOCIAL_LINKS = [
   {
     name: "Facebook",
     href: "//www.facebook.com/HamiltonCollege",
-    // Facebook "f" path
     path: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
   },
   {
     name: "Instagram",
     href: "//www.instagram.com/hamiltoncollege",
-    // Instagram camera outline
     path: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2z",
   },
   {
@@ -34,14 +34,14 @@ const SOCIAL_LINKS = [
 ];
 
 const NAV_LINKS = [
-  { label: "My Hamilton",      href: "//www.hamilton.edu/myhamilton" },
-  { label: "Maps & Directions", href: "//www.hamilton.edu/admission/visiting/directions" },
+  { label: "My Hamilton",        href: "//www.hamilton.edu/myhamilton" },
+  { label: "Maps & Directions",  href: "//www.hamilton.edu/admission/visiting/directions" },
   { label: "Offices & Services", href: "//www.hamilton.edu/offices/offices-services" },
   { label: "Non-discrimination", href: "//www.hamilton.edu/offices/afs/policies/non-discrimination-statement" },
-  { label: "Accessibility",    href: "//www.hamilton.edu/about/accessibility" },
-  { label: "Privacy",          href: "//www.hamilton.edu/privacy" },
-  { label: "Jobs",             href: "//www.hamilton.edu/offices/human-resources/employment/job-opportunities" },
-  { label: "Contact Us",       href: "//www.hamilton.edu/about/contact" },
+  { label: "Accessibility",      href: "//www.hamilton.edu/about/accessibility" },
+  { label: "Privacy",            href: "//www.hamilton.edu/privacy" },
+  { label: "Jobs",               href: "//www.hamilton.edu/offices/human-resources/employment/job-opportunities" },
+  { label: "Contact Us",         href: "//www.hamilton.edu/about/contact" },
 ];
 
 function SocialIcon({ path }) {
@@ -54,7 +54,7 @@ function SocialIcon({ path }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: 20, height: 20 }}
+      style={{ width: 18, height: 18 }}
     >
       <path d={path} />
     </svg>
@@ -62,30 +62,40 @@ function SocialIcon({ path }) {
 }
 
 export default function HamiltonFooter() {
+  const isMobile = useIsMobile();
+
   return (
     <footer style={s.footer}>
 
-      {/* ── Top ribbon: address + social icons ───────────────── */}
-      <div style={s.ribbon}>
-        <div style={s.ribbonInner}>
+      {/* ── Top ribbon ─────────────────────────────────────────── */}
+      <div style={{ ...s.ribbon, padding: isMobile ? "1rem 1rem" : "1.5rem 2rem" }}>
+        <div style={{
+          ...s.ribbonInner,
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
+          gap: isMobile ? "0.75rem" : "1.25rem",
+        }}>
 
-          {/* Address + phone */}
           <div style={s.metaInfo}>
             <a
               href="//www.google.com/maps/place/?q=place_id:ChIJ515-9xlp2YkRlZiUeiygm3w"
               target="_blank"
               rel="noopener noreferrer"
-              style={s.metaLink}
+              style={{ ...s.metaLink, fontSize: isMobile ? "0.8rem" : "0.875rem" }}
             >
               198 College Hill Road, Clinton, NY 13323
             </a>
-            <a href="tel:3158594011" style={s.metaLink}>
+            <a href="tel:3158594011" style={{ ...s.metaLink, fontSize: isMobile ? "0.8rem" : "0.875rem" }}>
               315-859-4011
             </a>
           </div>
 
-          {/* Social icons */}
-          <div style={s.socialNav}>
+          <div style={{
+            ...s.socialNav,
+            flexDirection: "row", // Keep inline on mobile to save height
+            alignItems: "center",
+            gap: "0.75rem",
+          }}>
             <span style={s.socialTitle}>Social</span>
             <ul style={s.socialList}>
               {SOCIAL_LINKS.map(({ name, href, path }) => (
@@ -97,11 +107,9 @@ export default function HamiltonFooter() {
                     style={s.socialLink}
                     title={name}
                     aria-label={name}
-                    onMouseEnter={e => (e.currentTarget.style.opacity = "0.75")}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
                   >
                     <SocialIcon path={path} />
-                    <span style={s.socialLabel}>{name}</span>
+                    {!isMobile && <span style={s.socialLabel}>{name}</span>}
                   </a>
                 </li>
               ))}
@@ -112,20 +120,30 @@ export default function HamiltonFooter() {
       </div>
 
       {/* ── Bottom bar: nav links + copyright ────────────────── */}
-      <div style={s.primary}>
-        <div style={s.primaryInner}>
+      <div style={{ ...s.primary, padding: isMobile ? "0.85rem 1rem" : "1.25rem 2rem" }}>
+        <div style={{
+          ...s.primaryInner,
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
+          gap: isMobile ? "0.5rem" : "1rem",
+        }}>
 
           <nav aria-label="Footer navigation">
-            <ul style={s.navList}>
+            <ul style={{
+              ...s.navList,
+              gap: isMobile ? "0.35rem 0.85rem" : "0.25rem 1.5rem"
+            }}>
               {NAV_LINKS.map(({ label, href }) => (
                 <li key={label}>
                   <a
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={s.navLink}
-                    onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
-                    onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
+                    style={{
+                      ...s.navLink,
+                      fontSize: isMobile ? "0.78rem" : "0.85rem",
+                      lineHeight: isMobile ? "1.4" : "1.8",
+                    }}
                   >
                     {label}
                   </a>
@@ -134,8 +152,12 @@ export default function HamiltonFooter() {
             </ul>
           </nav>
 
-          <p style={s.copyright}>
-            © 2026 Hamilton College. All Rights Reserved.
+          <p style={{
+            ...s.copyright,
+            fontSize: isMobile ? "0.75rem" : "0.8rem",
+            marginTop: isMobile ? "0.25rem" : 0
+          }}>
+            © {new Date().getFullYear()} Hamilton College. All Rights Reserved.
           </p>
 
         </div>
@@ -149,14 +171,12 @@ const s = {
   footer: {
     backgroundColor: "#003366",
     color: "#ffffff",
-    marginTop: "auto",   // pushes footer to bottom when content is short
+    marginTop: "auto",
     fontSize: "0.875rem",
+    flexShrink: 0,
   },
-
-  // ── Ribbon ──────────────────────────────────────────────────────
   ribbon: {
     borderBottom: "1px solid rgba(255,255,255,0.15)",
-    padding: "1.5rem 2rem",
   },
   ribbonInner: {
     maxWidth: "1100px",
@@ -164,31 +184,23 @@ const s = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    alignItems: "center",
-    gap: "1.25rem",
   },
-
-  // ── Address / phone ─────────────────────────────────────────────
   metaInfo: {
     display: "flex",
     flexDirection: "column",
-    gap: "0.25rem",
+    gap: "0.15rem",
   },
   metaLink: {
     color: "#ccd9e8",
     textDecoration: "none",
-    lineHeight: "1.6",
+    lineHeight: "1.4",
   },
-
-  // ── Social ──────────────────────────────────────────────────────
   socialNav: {
     display: "flex",
-    alignItems: "center",
-    gap: "1rem",
   },
   socialTitle: {
     fontWeight: "600",
-    fontSize: "0.8rem",
+    fontSize: "0.75rem",
     textTransform: "uppercase",
     letterSpacing: "0.08em",
     color: "#ccd9e8",
@@ -198,24 +210,17 @@ const s = {
     margin: 0,
     padding: 0,
     display: "flex",
-    gap: "0.75rem",
-    flexWrap: "wrap",
+    gap: "0.65rem",
   },
   socialLink: {
     color: "#ffffff",
     display: "flex",
     alignItems: "center",
-    gap: "0.35rem",
     textDecoration: "none",
     transition: "opacity 0.15s",
   },
   socialLabel: {
     fontSize: "0.8rem",
-  },
-
-  // ── Primary / nav bar ───────────────────────────────────────────
-  primary: {
-    padding: "1.25rem 2rem",
   },
   primaryInner: {
     maxWidth: "1100px",
@@ -223,8 +228,6 @@ const s = {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-between",
-    alignItems: "center",
-    gap: "1rem",
   },
   navList: {
     listStyle: "none",
@@ -232,16 +235,13 @@ const s = {
     padding: 0,
     display: "flex",
     flexWrap: "wrap",
-    gap: "0.25rem 1.5rem",
   },
   navLink: {
     color: "#ccd9e8",
     textDecoration: "none",
-    lineHeight: "1.8",
   },
   copyright: {
     margin: 0,
     color: "#99afc4",
-    fontSize: "0.8rem",
   },
 };

@@ -6,11 +6,12 @@
  * and footer in a unified layout.
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChatWidget from "./ChatWidget";
 import VideoIntegration from "./video-integration/VideoIntegration";
 import HamiltonFooter from "./HamiltonFooter";
 import WelcomePage from "./WelcomePage";
+import { useIsMobile } from "./useIsMobile";
 
 // ── Sidebar links config — easy to add/remove entries ──────────────────────
 const SIDEBAR_LINKS = [
@@ -40,15 +41,35 @@ const SIDEBAR_LINKS = [
 ];
 
 const SIDEBAR_WIDTH = 260;
-
-// Total space the chat drawer occupies from the right edge (width + side gap)
-// Keep in sync with DRAWER_WIDTH + SIDE_GAP in ChatWidget.jsx
 const CHAT_PUSH_WIDTH = 504;
 
-function Sidebar({ open }) {
+function Sidebar({ open, isMobile }) {
   return (
-    <aside style={{ ...styles.sidebar, width: open ? SIDEBAR_WIDTH : 0 }}>
-      <div style={styles.sidebarInner}>
+    <aside style={{
+      ...styles.sidebar,
+      // Desktop: Animate sidebar width open/close
+      ...(!isMobile && { width: open ? SIDEBAR_WIDTH : 0 }),
+      // Mobile: Converts to sliding overlay drawer to keep screen layout intact
+      ...(isMobile && {
+        position: "fixed",
+        top: "60px", 
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: "100%",
+        height: "calc(100dvh - 60px)",
+        zIndex: 1040, 
+        transform: open ? "translateX(0)" : "translateX(-110%)", 
+        borderRight: "none",
+        borderTop: "1px solid #dce3ec",
+        boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+      }),
+    }}>
+      <div style={{
+        ...styles.sidebarInner,
+        width: isMobile ? "100%" : SIDEBAR_WIDTH,
+        padding: isMobile ? "1.5rem 1.25rem" : "1.25rem 1rem",
+      }}>
         <p style={styles.sidebarTitle}>Helpful Resources</p>
 
         {SIDEBAR_LINKS.map(({ category, links }) => (
@@ -77,7 +98,21 @@ function Sidebar({ open }) {
 function App() {
   const [entered, setEntered]         = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [chatOpen, setChatOpen]       = useState(false); // Lifted up so main content can react to it
+  const [chatOpen, setChatOpen]       = useState(false); 
+  const isMobile                      = useIsMobile();   
+
+  // Lock background scrolling when overlay drawers are open on mobile
+  useEffect(() => {
+    if (isMobile && (sidebarOpen || chatOpen)) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [sidebarOpen, chatOpen, isMobile]);
 
   if (!entered) {
     return <WelcomePage onEnter={() => setEntered(true)} />;
@@ -88,7 +123,6 @@ function App() {
 
       {/* ── Header ──────────────────────────────────────────────── */}
       <header style={styles.header}>
-        {/* Toggle button lives in the header so it's always visible */}
         <button
           style={styles.toggleBtn}
           onClick={() => setSidebarOpen(o => !o)}
@@ -97,81 +131,85 @@ function App() {
         >
           {sidebarOpen ? "✕" : "☰"}
         </button>
-        <h1 style={styles.headerTitle}>
-          Hamilton International Student Services Learning Module
+
+        <h1 style={{
+          ...styles.headerTitle,
+          fontSize: isMobile ? "1rem" : "1.25rem",
+        }}>
+          {isMobile ? "Hamilton ISS Module" : "Hamilton International Student Services Learning Module"}
         </h1>
 
-        {/* Chat trigger button in the header — toggles the drawer */}
         <button
           style={styles.chatTriggerBtn}
           onClick={() => setChatOpen(o => !o)}
           aria-label={chatOpen ? "Close ISS Assistant" : "Open ISS Assistant"}
-          title="ISS AI Assistant"
+          title="ISS Assistant"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12 3C7.03 3 3 6.58 3 11c0 2.13.9 4.06 2.36 5.48L4 21l4.7-1.55A9.27 9.27 0 0 0 12 19c4.97 0 9-3.58 9-8s-4.03-8-9-8z"
               fill="white"
             />
           </svg>
-          ISS Assistant
+          {isMobile ? "Assistant" : "ISS Assistant"}
         </button>
       </header>
 
-      {/* ── Body: resources sidebar + main content ──────────────── */}
-      <div style={styles.body}>
+      {/* ── Body ───────────────────────────────────────────────── */}
+      <div style={{
+        ...styles.body,
+        overflow: isMobile ? "visible" : "hidden",
+      }}>
+        <Sidebar open={sidebarOpen} isMobile={isMobile} />
 
-        <Sidebar open={sidebarOpen} />
-
-        {/* Main shrinks its right margin to make room for the chat drawer */}
         <main
           style={{
             ...styles.main,
-            marginRight: chatOpen ? CHAT_PUSH_WIDTH : 0,
+            marginRight: chatOpen && !isMobile ? CHAT_PUSH_WIDTH : 0,
+            overflow: isMobile ? "visible" : "hidden",
             transition: "margin-right 0.32s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* VideoIntegration owns its own two-column episode layout */}
           <VideoIntegration />
         </main>
-
       </div>
 
+      {/* The Footer naturally pushes to the bottom because styles.body has flex: 1 */}
       <HamiltonFooter />
-
-      {/* Chat drawer — fixed positioned, rendered outside the flow */}
       <ChatWidget isOpen={chatOpen} setIsOpen={setChatOpen} />
-
     </div>
   );
 }
 
 const styles = {
   root: {
+    // 1. Establish the entire app as a flex column
     display: "flex",
     flexDirection: "column",
+    // 2. Ensure it takes up at least the full viewport height
     minHeight: "100vh",
   },
-
-  // ── Header ──────────────────────────────────────────────────────
   header: {
     backgroundColor: "#003366",
     color: "white",
-    padding: "0 1.5rem",
+    padding: "0 1rem",
     height: "60px",
     display: "flex",
     alignItems: "center",
-    gap: "1rem",
-    position: "sticky",          // stays visible during scroll
+    gap: "0.75rem",
+    position: "sticky",          
     top: 0,
-    zIndex: 100,
+    zIndex: 1050, 
     flexShrink: 0,
   },
   headerTitle: {
     margin: 0,
-    fontSize: "1.25rem",
-    flex: 1,                     // pushes the chat button to the far right
+    flex: 1,                     
     fontWeight: "600",
+    overflow: "hidden",          
+    textOverflow: "ellipsis",    
+    whiteSpace: "nowrap",        
+    minWidth: 0,                 
   },
   toggleBtn: {
     background: "transparent",
@@ -187,42 +225,36 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
-  /* Chat trigger in the header — pill-shaped */
   chatTriggerBtn: {
     display: "flex",
     alignItems: "center",
-    gap: "8px",
-    padding: "7px 16px",
+    gap: "6px",
+    padding: "6px 12px",
     backgroundColor: "transparent",
     border: "1.5px solid rgba(255,255,255,0.55)",
     borderRadius: "20px",
     color: "white",
     cursor: "pointer",
-    fontSize: "0.95rem",
+    fontSize: "0.85rem",
     fontWeight: "500",
     flexShrink: 0,
     whiteSpace: "nowrap",
   },
-
-  // ── Layout ──────────────────────────────────────────────────────
   body: {
     display: "flex",
+    // 3. This tells the middle section to grow and consume all empty space
     flex: 1,
-    overflow: "hidden",          // prevents double scrollbars
   },
-
-  // ── Resources sidebar ────────────────────────────────────────────
   sidebar: {
     backgroundColor: "#f0f4f8",
     borderRight: "1px solid #dce3ec",
     overflowX: "hidden",
     overflowY: "auto",
-    transition: "width 0.25s ease",  // smooth open/close
+    transition: "transform 0.3s ease, width 0.25s ease", 
     flexShrink: 0,
   },
   sidebarInner: {
-    width: SIDEBAR_WIDTH,            // fixed inner width prevents text reflow
-    padding: "1.25rem 1rem",
+    // Width handled dynamically in component props
   },
   sidebarTitle: {
     fontWeight: "700",
@@ -255,14 +287,11 @@ const styles = {
     lineHeight: "1.5",
     transition: "background-color 0.15s",
   },
-
-  // ── Main content — VideoIntegration fills this entirely ──────────
   main: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
-    overflow: "hidden",
-    minWidth: 0,                 // allows flex child to shrink below content size when chat pushes it
+    minWidth: 0,                 
   },
 };
 
